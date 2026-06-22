@@ -153,7 +153,7 @@ export function Hero() {
             {/* Header Image */}
             <div className="relative h-44 w-full overflow-hidden">
               <img
-                src="/AERO/bcn-airport.png"
+                src="/aero/bcn-airport.webp"
                 alt="Aeropuerto El Prat"
                 className="w-full h-full object-cover"
               />
