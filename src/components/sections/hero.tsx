@@ -3,11 +3,31 @@
 import { useRef, useCallback, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MapPin, Shield, Info } from "lucide-react";
+import { ArrowRight, MapPin, Shield, Info, Plane, Search, Clock, Sparkles } from "lucide-react";
+
+const MOCK_FLIGHTS = [
+  { id: 1, flight: "VY 1002", destination: "Londres-Gatwick", time: "18:45", status: "Embarcando", type: "departure", gate: "B24" },
+  { id: 2, flight: "IB 1234", destination: "Madrid-Barajas", time: "19:15", status: "En hora", type: "departure", gate: "A12" },
+  { id: 3, flight: "FR 6342", destination: "Roma-Fiumicino", time: "19:40", status: "Retrasado", type: "departure", gate: "C10" },
+  { id: 4, flight: "LH 1815", destination: "Múnich", time: "20:05", status: "Programado", type: "departure", gate: "B31" },
+  { id: 5, flight: "VY 2004", destination: "París-Orly", time: "20:20", status: "Programado", type: "departure", gate: "A08" },
+  { id: 6, flight: "AF 1123", destination: "París-CDG", time: "19:00", status: "Llegado", type: "arrival", gate: "T1 - Sala A" },
+  { id: 7, flight: "AZ 7890", destination: "Milán-Linate", time: "19:30", status: "En hora", type: "arrival", gate: "T1 - Sala B" },
+  { id: 8, flight: "UX 4002", destination: "Palma de Mallorca", time: "20:10", status: "En hora", type: "arrival", gate: "T2 - Sala C" },
+];
+
+const SECURITY_QUEUES = [
+  { terminal: "Terminal T1", name: "Filtros T1", time: "4 min", status: "fluid", description: "Tránsito rápido" },
+  { terminal: "Terminal T1 Express", name: "Fast Track T1", time: "1 min", status: "fluid", description: "Preferente" },
+  { terminal: "Terminal T2", name: "Filtros T2B", time: "3 min", status: "fluid", description: "Sin esperas" },
+];
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [activeTab, setActiveTab] = useState<"vuelos" | "seguridad">("vuelos");
+  const [flightType, setFlightType] = useState<"salidas" | "llegadas">("salidas");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!containerRef.current) return;
@@ -23,6 +43,14 @@ export function Hero() {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [handleMouseMove]);
+
+  const filteredFlights = MOCK_FLIGHTS.filter((f) => {
+    const matchType = f.type === (flightType === "salidas" ? "departure" : "arrival");
+    const matchSearch =
+      f.flight.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      f.destination.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchType && matchSearch;
+  });
 
   return (
     <section
@@ -110,140 +138,206 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Right: Airport illustration */}
+        {/* Right: Airport Live Dashboard Card */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative hidden lg:block"
+          className="relative block w-full lg:max-w-[480px] justify-self-center"
         >
+          {/* Main Card with tilt effect */}
           <div
-            className="relative rounded-2xl overflow-hidden shadow-2xl shadow-primary/10 border border-white/10 bg-gradient-to-br from-primary/10 via-transparent to-accent/5"
+            className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-zinc-900/60 backdrop-blur-xl flex flex-col min-h-[500px]"
             style={{ transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`, transition: "transform 0.2s ease-out" }}
           >
-            <div className="aspect-[4/3] relative flex items-center justify-center p-6">
-              {/* SVG Airport Scene */}
-              <svg viewBox="0 0 520 390" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Sky background gradient */}
-                  <defs>
-                    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="oklch(0.15 0.04 255)" stopOpacity="1" />
-                      <stop offset="100%" stopColor="oklch(0.10 0.02 255)" stopOpacity="1" />
-                    </linearGradient>
-                    <linearGradient id="runwayGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="oklch(0.20 0.01 255)" stopOpacity="0" />
-                      <stop offset="50%" stopColor="oklch(0.25 0.02 255)" stopOpacity="1" />
-                      <stop offset="100%" stopColor="oklch(0.20 0.01 255)" stopOpacity="0" />
-                    </linearGradient>
-                    <linearGradient id="planeGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="oklch(0.80 0.12 220)" />
-                      <stop offset="100%" stopColor="oklch(0.95 0.03 220)" />
-                    </linearGradient>
-                  </defs>
-
-                  <rect width="520" height="390" fill="url(#skyGrad)" rx="16" />
-
-                  {/* Stars */}
-                  {[[40,30],[90,55],[150,20],[220,45],[290,25],[360,60],[420,35],[480,50],[500,20],[55,80],[130,70],[200,15]].map(([cx, cy], i) => (
-                    <circle key={i} cx={cx} cy={cy} r={i % 3 === 0 ? 1.5 : 1} fill="white" opacity={i % 2 === 0 ? 0.6 : 0.3} />
-                  ))}
-
-                  {/* Moon */}
-                  <circle cx="460" cy="45" r="22" fill="oklch(0.88 0.06 70)" opacity="0.9" />
-                  <circle cx="472" cy="38" r="18" fill="oklch(0.12 0.03 255)" />
-
-                  {/* Clouds */}
-                  <g className="cloud-drift-1">
-                    <ellipse cx="100" cy="95" rx="45" ry="18" fill="white" opacity="0.06" />
-                    <ellipse cx="125" cy="85" rx="30" ry="14" fill="white" opacity="0.07" />
-                    <ellipse cx="80" cy="90" rx="28" ry="12" fill="white" opacity="0.05" />
-                  </g>
-                  <g className="cloud-drift-2">
-                    <ellipse cx="370" cy="80" rx="40" ry="16" fill="white" opacity="0.05" />
-                    <ellipse cx="395" cy="70" rx="25" ry="12" fill="white" opacity="0.06" />
-                  </g>
-
-                  {/* Terminal building */}
-                  <rect x="60" y="190" width="260" height="120" rx="4" fill="oklch(0.22 0.02 255)" stroke="oklch(0.35 0.05 240)" strokeWidth="1" />
-                  {/* Terminal windows */}
-                  {[80,110,140,170,200,230,260,290].map((x, i) => (
-                    <rect key={i} x={x} y="205" width="18" height="26" rx="2" fill={i % 3 === 0 ? "oklch(0.78 0.18 58)" : "oklch(0.68 0.20 220)"} opacity={i % 2 === 0 ? 0.8 : 0.4} />
-                  ))}
-                  {/* Terminal roof detail */}
-                  <rect x="55" y="183" width="270" height="12" rx="3" fill="oklch(0.28 0.03 250)" />
-                  <text x="190" y="260" textAnchor="middle" fill="oklch(0.65 0.15 220)" fontSize="11" fontWeight="700" fontFamily="sans-serif" letterSpacing="2">TERMINAL 1</text>
-
-                  {/* Control tower */}
-                  <rect x="340" y="170" width="28" height="140" rx="4" fill="oklch(0.25 0.03 250)" stroke="oklch(0.35 0.05 240)" strokeWidth="1" />
-                  <rect x="330" y="158" width="48" height="22" rx="6" fill="oklch(0.30 0.04 245)" stroke="oklch(0.68 0.20 220)" strokeWidth="1.5" />
-                  <ellipse cx="354" cy="158" rx="24" ry="8" fill="oklch(0.68 0.20 220)" opacity="0.3" />
-                  {/* Tower windows */}
-                  <rect x="338" y="163" width="10" height="10" rx="2" fill="oklch(0.68 0.20 220)" opacity="0.7" />
-                  <rect x="360" y="163" width="10" height="10" rx="2" fill="oklch(0.78 0.18 58)" opacity="0.7" />
-                  {/* Blinking light */}
-                  <circle cx="354" cy="152" r="4" fill="oklch(0.78 0.20 25)" className="status-pulse" />
-
-                  {/* Runway */}
-                  <rect x="30" y="315" width="460" height="55" rx="4" fill="url(#runwayGrad)" />
-                  {/* Runway center line dashes */}
-                  {[50,110,170,230,290,350,410].map((x, i) => (
-                    <rect key={i} x={x} y="337" width="40" height="6" rx="3" fill="oklch(0.78 0.18 58)" opacity="0.7" />
-                  ))}
-                  {/* Runway edge lights */}
-                  {[40,90,140,190,240,290,340,390,440,480].map((x, i) => (
-                    <circle key={i} cx={x} cy="316" r="3" fill="oklch(0.78 0.18 58)" opacity="0.9" className="status-pulse" />
-                  ))}
-                  {[40,90,140,190,240,290,340,390,440,480].map((x, i) => (
-                    <circle key={`b${i}`} cx={x} cy="369" r="3" fill="oklch(0.78 0.18 58)" opacity="0.7" />
-                  ))}
-
-                  {/* Airplane — main */}
-                  <g className="plane-fly-in" style={{ transformOrigin: "260px 165px" }}>
-                    <g transform="translate(180, 130) rotate(-8)">
-                      {/* Fuselage */}
-                      <ellipse cx="80" cy="22" rx="75" ry="13" fill="url(#planeGrad)" />
-                      {/* Nose */}
-                      <ellipse cx="152" cy="22" rx="10" ry="8" fill="oklch(0.92 0.05 220)" />
-                      {/* Cockpit windows */}
-                      <ellipse cx="148" cy="18" rx="6" ry="4" fill="oklch(0.30 0.08 240)" opacity="0.8" />
-                      {/* Main wing */}
-                      <path d="M60 22 L110 22 L90 55 L30 52 Z" fill="oklch(0.75 0.10 220)" opacity="0.9" />
-                      <path d="M60 22 L110 22 L90 -10 L30 -8 Z" fill="oklch(0.75 0.10 220)" opacity="0.9" />
-                      {/* Wing engine */}
-                      <ellipse cx="65" cy="50" rx="15" ry="6" fill="oklch(0.55 0.08 240)" />
-                      <ellipse cx="65" cy="-6" rx="15" ry="6" fill="oklch(0.55 0.08 240)" />
-                      {/* Tail */}
-                      <path d="M8 22 L0 22 L-5 5 L20 10 Z" fill="oklch(0.70 0.12 220)" />
-                      <path d="M8 22 L0 22 L-5 38 L20 33 Z" fill="oklch(0.70 0.12 220)" />
-                      {/* Vertical stabilizer */}
-                      <path d="M5 15 L-8 -5 L15 15 Z" fill="oklch(0.68 0.20 220)" opacity="0.8" />
-                      {/* Windows strip */}
-                      {[100,115,128,140].map((x, i) => (
-                        <ellipse key={i} cx={x} cy="17" rx="5" ry="4" fill="oklch(0.78 0.18 58)" opacity="0.6" />
-                      ))}
-                      {/* Engine glow */}
-                      <ellipse cx="155" cy="22" rx="4" ry="4" fill="oklch(0.78 0.18 58)" opacity="0.5" className="status-pulse" />
-                    </g>
-                  </g>
-
-                  {/* Ground vehicles */}
-                  <rect x="150" y="300" width="40" height="16" rx="3" fill="oklch(0.55 0.18 145)" opacity="0.8" />
-                  <rect x="155" y="295" width="30" height="8" rx="2" fill="oklch(0.60 0.18 145)" opacity="0.6" />
-                  <rect x="240" y="302" width="30" height="12" rx="2" fill="oklch(0.65 0.18 55)" opacity="0.7" />
-
-                  {/* Ambient glow under terminal */}
-                  <ellipse cx="190" cy="310" rx="130" ry="15" fill="oklch(0.68 0.20 220)" opacity="0.07" />
-                </svg>
+            {/* Header Image */}
+            <div className="relative h-44 w-full overflow-hidden">
+              <img
+                src="/AERO/bcn-airport.png"
+                alt="Aeropuerto El Prat"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
+              <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 text-[10px] font-bold text-primary tracking-widest uppercase flex items-center gap-1.5">
+                <span className="size-1.5 rounded-full bg-green-400 animate-pulse" />
+                Panel en vivo
+              </div>
+              <div className="absolute bottom-4 left-4">
+                <h3 className="text-lg font-bold text-white leading-tight">Barcelona-El Prat</h3>
+                <p className="text-xs text-white/70 font-medium">Terminal T1 & T2 · IATA: BCN</p>
+              </div>
             </div>
 
-            {/* Live badge */}
-            <div className="absolute bottom-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-sm border border-border/60 text-xs font-semibold text-foreground shadow-sm">
-              <span className="size-2 rounded-full bg-green-400 status-pulse" />
-              Operativo 24h
+            {/* Tabs Selector */}
+            <div className="flex border-b border-white/10 bg-zinc-950/40">
+              <button
+                onClick={() => setActiveTab("vuelos")}
+                className={`flex-1 py-3 text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center gap-2 ${
+                  activeTab === "vuelos"
+                    ? "text-primary border-b-2 border-primary bg-primary/5"
+                    : "text-white/60 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <Plane className="size-4 shrink-0" />
+                Vuelos en Vivo
+              </button>
+              <button
+                onClick={() => setActiveTab("seguridad")}
+                className={`flex-1 py-3 text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center gap-2 ${
+                  activeTab === "seguridad"
+                    ? "text-primary border-b-2 border-primary bg-primary/5"
+                    : "text-white/60 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <Shield className="size-4 shrink-0" />
+                Filtros Seguridad
+              </button>
             </div>
-            {/* IATA code badge */}
-            <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 text-xs font-bold text-primary tracking-widest">
-              BCN
+
+            {/* Card Content Area */}
+            <div className="p-5 flex-1 flex flex-col justify-between bg-zinc-950/20">
+              {activeTab === "vuelos" ? (
+                <div className="flex-1 flex flex-col gap-4">
+                  {/* Search and flight type toggle */}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    {/* Search */}
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40" />
+                      <input
+                        type="text"
+                        placeholder="Buscar vuelo o destino..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-9 pr-4 py-1.5 rounded-lg bg-zinc-900/60 border border-white/10 text-sm text-white placeholder-white/40 focus:outline-none focus:border-primary/50"
+                      />
+                    </div>
+                    {/* Type Toggle */}
+                    <div className="flex rounded-lg bg-zinc-900 border border-white/10 p-0.5 self-start sm:self-auto">
+                      <button
+                        onClick={() => setFlightType("salidas")}
+                        className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
+                          flightType === "salidas"
+                            ? "bg-primary text-primary-foreground font-semibold"
+                            : "text-white/60 hover:text-white"
+                        }`}
+                      >
+                        Salidas
+                      </button>
+                      <button
+                        onClick={() => setFlightType("llegadas")}
+                        className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
+                          flightType === "llegadas"
+                            ? "bg-primary text-primary-foreground font-semibold"
+                            : "text-white/60 hover:text-white"
+                        }`}
+                      >
+                        Llegadas
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Flight list */}
+                  <div className="overflow-y-auto max-h-[220px] flex flex-col gap-2 pr-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                    {filteredFlights.length > 0 ? (
+                      filteredFlights.map((f) => (
+                        <div
+                          key={f.id}
+                          className="flex items-center justify-between p-3 rounded-lg bg-zinc-900/40 border border-white/5 hover:border-white/15 transition-all"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`p-1.5 rounded-md ${
+                              f.type === "departure" ? "bg-blue-500/10 text-blue-400" : "bg-teal-500/10 text-teal-400"
+                            }`}>
+                              <Plane className={`size-3.5 ${f.type === "departure" ? "rotate-45" : "rotate-135"}`} />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-semibold text-sm text-white">{f.flight}</span>
+                                <span className="text-[10px] text-white/40 font-mono bg-white/5 px-1.5 py-0.5 rounded">
+                                  {f.gate}
+                                </span>
+                              </div>
+                              <span className="text-xs text-white/50">{f.destination}</span>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <span className="block font-mono text-sm text-white">{f.time}</span>
+                            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full inline-block mt-1 ${
+                              f.status === "Embarcando" ? "bg-amber-500/10 text-amber-400 border border-amber-500/20" :
+                              f.status === "En hora" ? "bg-green-500/10 text-green-400 border border-green-500/20" :
+                              f.status === "Retrasado" ? "bg-red-500/10 text-red-400 border border-red-500/20" :
+                              f.status === "Llegado" ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" :
+                              "bg-zinc-500/10 text-zinc-400 border border-zinc-500/20"
+                            }`}>
+                              {f.status}
+                            </span>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="py-8 text-center text-sm text-white/40">
+                        No se encontraron vuelos
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex-1 flex flex-col gap-4">
+                  {/* Wait times */}
+                  <div className="flex flex-col gap-3">
+                    <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
+                      Tiempos de espera estimados
+                    </span>
+                    {SECURITY_QUEUES.map((q, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between p-3 rounded-lg bg-zinc-900/40 border border-white/5"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <Clock className="size-4 text-primary shrink-0" />
+                          <div>
+                            <span className="block font-semibold text-sm text-white leading-none mb-1">
+                              {q.name}
+                            </span>
+                            <span className="text-xs text-white/45">{q.description}</span>
+                          </div>
+                        </div>
+                        <div className="text-right flex items-center gap-3">
+                          <div className="w-16 bg-zinc-800 h-1.5 rounded-full overflow-hidden hidden sm:block">
+                            <div
+                              className="bg-primary h-full rounded-full"
+                              style={{ width: q.time.includes("1 min") ? "20%" : "60%" }}
+                            />
+                          </div>
+                          <span className="font-mono text-base font-bold text-primary">
+                            {q.time}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Security Alert Tips */}
+                  <div className="p-3.5 rounded-xl bg-primary/10 border border-primary/20 text-xs text-white/80 leading-relaxed flex items-start gap-2.5">
+                    <Info className="size-4 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <span className="block font-bold text-primary mb-1">¿Cómo pasar rápido el filtro?</span>
+                      Lleva los líquidos en una bolsa transparente independiente y saca ordenadores, tablets y cargadores de tu equipaje de mano antes del escaneo.
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Status info bar */}
+              <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-white/40">
+                <span className="flex items-center gap-1.5">
+                  <span className="size-1.5 rounded-full bg-emerald-500 animate-ping" />
+                  Actualizado en tiempo real
+                </span>
+                <span className="hover:text-primary transition-colors cursor-pointer" onClick={() => document.querySelector("#seguridad")?.scrollIntoView({ behavior: "smooth" })}>
+                  Ver guía de líquidos &rarr;
+                </span>
+              </div>
             </div>
           </div>
         </motion.div>
