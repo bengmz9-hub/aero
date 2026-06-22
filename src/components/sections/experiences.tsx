@@ -193,7 +193,7 @@ export function Transport() {
   }, [activeFilter]);
 
   return (
-    <section id="transporte" className="py-16 md:py-20 section-glow border-t border-white/5">
+    <section id="transporte" className="py-10 md:py-12 section-glow border-t border-white/5">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -226,7 +226,7 @@ export function Transport() {
                 onClick={() => setActiveFilter(isActive ? null : f.key)}
                 className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-xs font-semibold tracking-wide uppercase transition-all duration-300 cursor-pointer ${
                   isActive
-                    ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20 scale-105"
+                    ? "bg-primary text-primary-foreground border-primary scale-105"
                     : "border-white/10 bg-zinc-900/60 text-white/70 hover:text-white hover:border-white/20"
                 }`}
               >

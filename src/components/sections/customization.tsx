@@ -167,7 +167,7 @@ export function AirportNav() {
   const zoneInfo = zones.find((z) => z.id === activeZone) ?? zones[1];
 
   return (
-    <section id="navegacion" className="py-16 md:py-20 section-glow border-t border-white/5">
+    <section id="navegacion" className="py-10 md:py-12 section-glow border-t border-white/5">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

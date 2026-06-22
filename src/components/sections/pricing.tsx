@@ -159,7 +159,7 @@ export function Security() {
   const step = STEPS[activeStep];
 
   return (
-    <section id="seguridad" className="py-16 md:py-20 bg-muted/20 section-glow border-t border-white/5">
+    <section id="seguridad" className="py-10 md:py-12 bg-muted/20 section-glow border-t border-white/5">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

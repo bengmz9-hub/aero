@@ -104,7 +104,7 @@ const QUICK_INFO = [
 
 export function UsefulLinks() {
   return (
-    <section id="links" className="py-16 md:py-20 border-t border-white/5">
+    <section id="links" className="py-10 md:py-12 border-t border-white/5">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -185,7 +185,7 @@ export function FAQ() {
   const filtered = activeTag ? FAQS.filter((f) => f.tag === activeTag) : FAQS;
 
   return (
-    <section id="faq" className="py-16 md:py-20 bg-muted/20 section-glow border-t border-white/5">
+    <section id="faq" className="py-10 md:py-12 bg-muted/20 section-glow border-t border-white/5">
       <div className="mx-auto max-w-4xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -228,7 +228,7 @@ export function FAQ() {
                 className={`inline-flex items-center px-4 py-2 rounded-full border text-xs font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer`}
                 style={
                   isActive
-                    ? { backgroundColor: faq.tagColor, borderColor: "transparent", color: "#fff", boxShadow: `0 4px 12px ${faq.tagColor}40` }
+                    ? { backgroundColor: faq.tagColor, borderColor: "transparent", color: "#fff" }
                     : { borderColor: "rgba(255,255,255,0.1)", backgroundColor: "rgba(24,24,27,0.6)", color: "rgba(255,255,255,0.7)" }
                 }
               >
