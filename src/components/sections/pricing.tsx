@@ -26,7 +26,7 @@ const STEPS: Step[] = [
       "Cada recipiente individual debe ser de máximo 100 ml (aunque esté medio vacío).",
       "Todos los líquidos deben caber en UNA sola bolsa zip transparente de 1 litro.",
       "Solo se permite UNA bolsa por persona.",
-      "La bolsa debe sacarse fácilmente del equipaje de mano.",
+      "La bolsa de líquidos debe sacarse fácilmente del equipaje de mano.",
       "Geles, cremas, pasta de dientes, colonia, desodorante spray — todo cuenta como líquido.",
       "¿No tienes bolsa zip? Las venden en el propio aeropuerto, pero es mejor llevarla preparada.",
     ],
@@ -65,7 +65,7 @@ const STEPS: Step[] = [
   {
     id: 4,
     title: "Coloca todo en las bandejas correctamente",
-    emoji: "📥",
+    icon: Inbox,
     accent: "var(--step-green)",
     description: "El orden en que colocas las cosas en las bandejas determina si el escáner bloquea o no.",
     details: [
@@ -80,7 +80,7 @@ const STEPS: Step[] = [
   {
     id: 5,
     title: "Pasa por el arco o escáner de personas",
-    emoji: "🚶",
+    icon: User,
     accent: "var(--step-red)",
     description: "Sigue las instrucciones del personal. Si pita, no te asustes — es muy habitual y tiene solución fácil.",
     details: [
@@ -96,7 +96,7 @@ const STEPS: Step[] = [
   {
     id: 6,
     title: "Recoge todo al otro lado con calma",
-    emoji: "✅",
+    icon: CheckCircle2,
     accent: "var(--step-purple)",
     description: "El otro lado del control es la Zona Aire — ya estás dentro. Pero no te vayas sin comprobarlo todo.",
     details: [
