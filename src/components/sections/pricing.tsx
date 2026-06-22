@@ -237,7 +237,7 @@ export function Pricing() {
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 className={`relative rounded-xl border p-6 transition-all duration-300 ${
                   tier.popular
-                    ? "border-primary shadow-md shadow-primary/10"
+                    ? "border-primary shadow-md shadow-primary/10 dark:shadow-primary/20"
                     : "border-border bg-card"
                 } ${isActive ? "ring-2 ring-primary/30" : ""}`}
               >

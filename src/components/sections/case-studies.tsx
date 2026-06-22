@@ -40,7 +40,7 @@ const CASE_STUDIES: CaseStudy[] = [
     role: "Head of People & Culture",
     metric: "Engagement Score",
     metricValue: "97%",
-    accent: "oklch(0.42 0.1 175)",
+    accent: "var(--exp-teal)",
   },
   {
     id: "tech-case",
@@ -56,7 +56,7 @@ const CASE_STUDIES: CaseStudy[] = [
     role: "CTO",
     metric: "Cross-team Collab",
     metricValue: "+62%",
-    accent: "oklch(0.65 0.15 25)",
+    accent: "var(--exp-crimson)",
   },
   {
     id: "consulting-case",
@@ -72,7 +72,7 @@ const CASE_STUDIES: CaseStudy[] = [
     role: "Managing Partner",
     metric: "Leaders Identified",
     metricValue: "14",
-    accent: "oklch(0.78 0.15 85)",
+    accent: "var(--exp-gold)",
   },
   {
     id: "healthcare-case",
@@ -88,7 +88,7 @@ const CASE_STUDIES: CaseStudy[] = [
     role: "Chief Innovation Officer",
     metric: "Ideas Generated",
     metricValue: "3x",
-    accent: "oklch(0.55 0.12 300)",
+    accent: "var(--exp-purple)",
   },
 ];
 
@@ -98,7 +98,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
   return (
     <motion.article
       layout
-      className="group rounded-xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow duration-300"
+      className="group rounded-xl border border-border bg-card overflow-hidden hover:shadow-lg hover:shadow-primary/5 dark:hover:shadow-primary/10 transition-all duration-300"
     >
       {/* Accent top bar */}
       <div
@@ -111,7 +111,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
             <div
-              className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+              className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-bold text-sm dark:text-foreground/90"
               style={{ backgroundColor: study.accent }}
             >
               {study.company.slice(0, 2).toUpperCase()}
@@ -208,7 +208,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
 
                 <div className="flex items-center gap-2">
                   <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-white dark:text-foreground/90 text-xs font-bold"
                     style={{ backgroundColor: study.accent }}
                   >
                     {study.author

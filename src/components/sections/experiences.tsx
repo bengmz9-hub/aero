@@ -43,7 +43,7 @@ const EXPERIENCES: Experience[] = [
     players: "10–30",
     skills: ["collaboration", "leadership"],
     icon: <Search className="size-6" />,
-    accent: "oklch(0.42 0.1 175)",
+    accent: "var(--exp-teal)",
   },
   {
     id: "vault-heist",
@@ -54,7 +54,7 @@ const EXPERIENCES: Experience[] = [
     players: "8–25",
     skills: ["leadership", "collaboration"],
     icon: <Lock className="size-6" />,
-    accent: "oklch(0.65 0.15 25)",
+    accent: "var(--exp-crimson)",
   },
   {
     id: "the-inventors-lab",
@@ -65,7 +65,7 @@ const EXPERIENCES: Experience[] = [
     players: "10–40",
     skills: ["creativity", "collaboration"],
     icon: <Lightbulb className="size-6" />,
-    accent: "oklch(0.78 0.15 85)",
+    accent: "var(--exp-gold)",
   },
   {
     id: "arctic-expedition",
@@ -76,7 +76,7 @@ const EXPERIENCES: Experience[] = [
     players: "15–50",
     skills: ["leadership", "creativity"],
     icon: <Compass className="size-6" />,
-    accent: "oklch(0.55 0.12 300)",
+    accent: "var(--exp-purple)",
   },
   {
     id: "codebreakers",
@@ -87,7 +87,7 @@ const EXPERIENCES: Experience[] = [
     players: "10–35",
     skills: ["creativity", "collaboration"],
     icon: <Star className="size-6" />,
-    accent: "oklch(0.5 0.18 75)",
+    accent: "var(--exp-orange)",
   },
   {
     id: "the-gala-affair",
@@ -98,7 +98,7 @@ const EXPERIENCES: Experience[] = [
     players: "20–60",
     skills: ["collaboration", "leadership", "creativity"],
     icon: <Trophy className="size-6" />,
-    accent: "oklch(0.45 0.14 310)",
+    accent: "var(--exp-magenta)",
   },
 ];
 
@@ -171,7 +171,7 @@ export function Experiences() {
                       transition: { duration: 0.35, ease: "easeInOut" },
                     }}
                     exit={{ opacity: 0, scale: 0.9 }}
-                    className="group relative rounded-xl border border-border bg-card p-6 hover:shadow-lg hover:border-primary/30 transition-shadow duration-300"
+                    className="group relative rounded-xl border border-border bg-card p-6 hover:shadow-lg hover:shadow-primary/5 dark:hover:shadow-primary/10 hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300"
                   >
                     {/* Accent bar */}
                     <div
@@ -182,7 +182,7 @@ export function Experiences() {
                     <div className="flex items-start justify-between mb-4">
                       <div
                         className="flex items-center justify-center size-11 rounded-lg"
-                        style={{ backgroundColor: `${exp.accent}15`, color: exp.accent }}
+                        style={{ backgroundColor: `color-mix(in oklch, ${exp.accent} 15%, transparent)`, color: exp.accent }}
                       >
                         {exp.icon}
                       </div>

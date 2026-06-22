@@ -53,12 +53,12 @@ export function CTASection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="relative rounded-2xl border border-border bg-card overflow-hidden shadow-xl"
+          className="relative rounded-2xl border border-border dark:border-border/50 bg-card overflow-hidden shadow-xl dark:shadow-2xl dark:shadow-primary/5"
         >
           {/* Background accent */}
           <div className="absolute inset-0 -z-0">
-            <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-accent/5 blur-3xl" />
+            <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-primary/5 dark:bg-primary/[0.03] blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-accent/5 dark:bg-accent/[0.03] blur-3xl" />
           </div>
 
           <div className="relative z-10 p-8 md:p-12 lg:p-16">

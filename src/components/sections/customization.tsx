@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,9 +48,15 @@ export function Customization() {
   const [dossierReady, setDossierReady] = useState(false);
   const [dossierId, setDossierId] = useState("--------");
 
-  useEffect(() => {
-    setDossierId(Date.now().toString(36).toUpperCase().slice(-6));
-  }, []);
+  // Generate dossier ID on mount (client-only to avoid hydration mismatch)
+  const initializedRef = useRef(false);
+  if (typeof window !== "undefined" && !initializedRef.current) {
+    initializedRef.current = true;
+    // We can't call setState during render, so we use a microtask
+    queueMicrotask(() => {
+      setDossierId(Date.now().toString(36).toUpperCase().slice(-6));
+    });
+  }
 
   const handleBuildDossier = () => {
     if (!companyName.trim()) return;
