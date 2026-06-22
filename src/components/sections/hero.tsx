@@ -55,7 +55,7 @@ export function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center overflow-hidden pt-16"
+      className="relative min-h-[85vh] flex items-center overflow-hidden pt-24 pb-8"
       onMouseLeave={handleMouseLeave}
     >
       {/* Sky gradient background */}
@@ -76,7 +76,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="mx-auto max-w-7xl px-5 md:px-8 w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-5 md:px-8 w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center pt-16 pb-8 md:pt-20 md:pb-10">
         {/* Left: Copy */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -84,7 +84,7 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="flex flex-col gap-6"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/15 text-primary text-xs font-semibold tracking-wide uppercase w-fit border border-primary/20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase w-fit border border-white/10">
             <MapPin className="size-3.5" />
             Aeropuerto de Barcelona · IATA: BCN
           </div>
@@ -345,21 +345,6 @@ export function Hero() {
 
       {/* Bottom fade to next section */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/30 text-xs"
-      >
-        <span>Desplázate para explorar</span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-          className="w-px h-8 bg-gradient-to-b from-white/30 to-transparent"
-        />
-      </motion.div>
     </section>
   );
 }

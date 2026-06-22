@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Building2, PlaneTakeoff, ShoppingBag, Utensils, Car, Luggage, Accessibility, Baby, Wifi, CircleDollarSign } from "lucide-react";
+import { MapPin, Building2, PlaneTakeoff, ShoppingBag, Utensils, Car, Luggage, Accessibility, Baby, Wifi, CircleDollarSign, PlaneLanding, Shield, Sparkles } from "lucide-react";
 
 type Terminal = "T1" | "T2";
 type Zone = "llegadas" | "salidas-tierra" | "seguridad" | "zona-aire" | "gates";
@@ -10,7 +10,7 @@ type Zone = "llegadas" | "salidas-tierra" | "seguridad" | "zona-aire" | "gates";
 interface ZoneInfo {
   id: Zone;
   label: string;
-  emoji: string;
+  icon: React.ComponentType<any>;
   accent: string;
   description: string;
   services: { icon: React.ReactNode; name: string; detail: string }[];
@@ -21,7 +21,7 @@ const ZONES_T1: ZoneInfo[] = [
   {
     id: "llegadas",
     label: "Llegadas (Planta Baja)",
-    emoji: "🛬",
+    icon: PlaneLanding,
     accent: "var(--zone-tierra)",
     description: "La zona de llegadas de T1 es donde sales si vienes de un vuelo. Aquí recoges tu equipaje y encuentras todos los servicios de bienvenida.",
     services: [
@@ -36,7 +36,7 @@ const ZONES_T1: ZoneInfo[] = [
   {
     id: "salidas-tierra",
     label: "Salidas Zona Tierra (Planta 3)",
-    emoji: "🏢",
+    icon: Building2,
     accent: "var(--step-teal)",
     description: "La zona de salidas en Zona Tierra es donde empiezas tu viaje. Aquí está el check-in, consigna de equipaje y acceso al control de seguridad.",
     services: [
@@ -51,7 +51,7 @@ const ZONES_T1: ZoneInfo[] = [
   {
     id: "seguridad",
     label: "Control de Seguridad",
-    emoji: "🛡️",
+    icon: Shield,
     accent: "var(--step-red)",
     description: "El punto de transición entre la Zona Tierra y la Zona Aire. Una vez dentro no puedes volver sin perder el derecho a entrar.",
     services: [
@@ -65,7 +65,7 @@ const ZONES_T1: ZoneInfo[] = [
   {
     id: "zona-aire",
     label: "Zona Aire — Comercial",
-    emoji: "🛍️",
+    icon: ShoppingBag,
     accent: "var(--zone-aire)",
     description: "Una vez pasado el control de seguridad, bienvenido a la Zona Aire. Aquí el tiempo pasa volando: tiendas, restaurantes y servicios de primera.",
     services: [
@@ -80,7 +80,7 @@ const ZONES_T1: ZoneInfo[] = [
   {
     id: "gates",
     label: "Puertas de Embarque (Gates)",
-    emoji: "✈️",
+    icon: PlaneTakeoff,
     accent: "var(--transport-aerobus)",
     description: "La zona final antes de subir al avión. T1 tiene muchísimos gates — vigila bien las pantallas de información.",
     services: [
@@ -97,7 +97,7 @@ const ZONES_T2: ZoneInfo[] = [
   {
     id: "llegadas",
     label: "Llegadas T2 (Planta Baja)",
-    emoji: "🛬",
+    icon: PlaneLanding,
     accent: "var(--zone-tierra)",
     description: "T2 tiene tres módulos (T2A, T2B, T2C). Todas las llegadas salen por la misma zona. Más pequeña que T1 pero perfectamente funcional.",
     services: [
@@ -110,7 +110,7 @@ const ZONES_T2: ZoneInfo[] = [
   {
     id: "salidas-tierra",
     label: "Salidas T2 Zona Tierra",
-    emoji: "🏢",
+    icon: Building2,
     accent: "var(--step-teal)",
     description: "T2 es más sencilla de navegar que T1. Los mostradores de check-in y los accesos al control están en la misma planta.",
     services: [
@@ -123,7 +123,7 @@ const ZONES_T2: ZoneInfo[] = [
   {
     id: "seguridad",
     label: "Control de Seguridad T2",
-    emoji: "🛡️",
+    icon: Shield,
     accent: "var(--step-red)",
     description: "El control de seguridad de T2 suele tener menos cola que T1. Mismas normas aplicables.",
     services: [
@@ -135,7 +135,7 @@ const ZONES_T2: ZoneInfo[] = [
   {
     id: "zona-aire",
     label: "Zona Aire T2",
-    emoji: "🛍️",
+    icon: ShoppingBag,
     accent: "var(--zone-aire)",
     description: "La Zona Aire de T2 es más pequeña pero ofrece los servicios esenciales: Duty Free, restauración y zonas de espera cómodas.",
     services: [
@@ -148,7 +148,7 @@ const ZONES_T2: ZoneInfo[] = [
   {
     id: "gates",
     label: "Gates T2 (A, B, C)",
-    emoji: "✈️",
+    icon: PlaneTakeoff,
     accent: "var(--transport-aerobus)",
     description: "Los tres módulos de T2 son separados pero conectados por pasillo cubierto. No necesitas salir al exterior para moverte entre ellos.",
     services: [
@@ -167,96 +167,86 @@ export function AirportNav() {
   const zoneInfo = zones.find((z) => z.id === activeZone) ?? zones[1];
 
   return (
-    <section id="navegacion" className="py-20 md:py-28 section-glow">
+    <section id="navegacion" className="py-16 md:py-20 section-glow border-t border-white/5">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4 border border-primary/20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase mb-4 border border-white/10">
             <MapPin className="size-3.5" />
-            Navega por el Aeropuerto
+            Navegación
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4">
-            Una vez dentro, ¿a dónde voy?
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
+            Distribución e <span className="runway-shimmer-text">Interior</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Selecciona tu terminal y la zona donde estás. Te explicamos qué encontrarás y cómo moverte.
+          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            Explora el mapa conceptual del aeropuerto por terminales y áreas clave. Encuentra servicios, accesos y todo lo necesario en cada parada.
           </p>
         </motion.div>
 
-        {/* Terminal selector */}
+        {/* Terminal Switcher */}
         <div className="flex justify-center mb-8">
-          <div className="inline-flex rounded-xl border border-border bg-muted/30 p-1 gap-1">
-            {(["T1", "T2"] as Terminal[]).map((t) => (
-              <button
-                key={t}
-                onClick={() => {
-                  setTerminal(t);
-                  setActiveZone("salidas-tierra");
-                }}
-                className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 cursor-pointer ${
-                  terminal === t
-                    ? "bg-primary text-primary-foreground shadow-md"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {t}
-                {t === "T1" && <span className="ml-1.5 text-xs font-normal opacity-70">(grande)</span>}
-                {t === "T2" && <span className="ml-1.5 text-xs font-normal opacity-70">(low-cost)</span>}
-              </button>
-            ))}
+          <div className="inline-flex rounded-xl bg-zinc-900 border border-white/10 p-1">
+            <button
+              onClick={() => {
+                setTerminal("T1");
+                setActiveZone("salidas-tierra");
+              }}
+              className={`px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                terminal === "T1"
+                  ? "bg-primary text-primary-foreground font-semibold shadow"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
+              Terminal T1
+            </button>
+            <button
+              onClick={() => {
+                setTerminal("T2");
+                setActiveZone("salidas-tierra");
+              }}
+              className={`px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                terminal === "T2"
+                  ? "bg-primary text-primary-foreground font-semibold shadow"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
+              Terminal T2
+            </button>
           </div>
         </div>
 
-        {/* Terminal description */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={terminal}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="text-center mb-10"
-          >
-            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-              {terminal === "T1"
-                ? "Terminal 1 es la más grande y moderna. Opera la mayoría de vuelos internacionales y de larga distancia. Aerolíneas: Iberia, Vueling (algunos), Air France, Lufthansa, British Airways, American Airlines..."
-                : "Terminal 2 tiene tres módulos (A, B, C) y opera principalmente vuelos nacionales y europeos low-cost. Aerolíneas principales: Vueling, Ryanair (algunos), easyJet, Transavia..."}
-            </p>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Zone flow — visual timeline */}
-        <div className="flex items-center justify-center gap-1 mb-10 overflow-x-auto pb-2">
+        {/* Zone navigation steps */}
+        <div className="flex overflow-x-auto gap-2 justify-start md:justify-center items-center pb-4 mb-8 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
           {zones.map((z, i) => (
             <div key={z.id} className="flex items-center shrink-0">
               <button
                 onClick={() => setActiveZone(z.id)}
-                className={`flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl text-center transition-all cursor-pointer ${
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all duration-300 cursor-pointer border ${
                   activeZone === z.id
-                    ? "bg-card border border-border shadow-sm"
-                    : "hover:bg-muted/40"
+                    ? "bg-zinc-900/60 border-primary shadow-lg shadow-primary/5 text-white"
+                    : "border-white/5 hover:border-white/15 text-white/50 hover:text-white/80"
                 }`}
               >
                 <div
-                  className="size-10 rounded-full flex items-center justify-center text-lg transition-all"
+                  className="size-8 rounded-lg flex items-center justify-center shrink-0 transition-all"
                   style={{
                     backgroundColor: activeZone === z.id ? `color-mix(in oklch, ${z.accent} 20%, transparent)` : "transparent",
-                    border: `2px solid ${activeZone === z.id ? z.accent : "var(--border)"}`,
+                    color: activeZone === z.id ? z.accent : "var(--muted-foreground)",
                   }}
                 >
-                  {z.emoji}
+                  <z.icon className="size-4.5" />
                 </div>
-                <span className={`text-xs font-medium max-w-[70px] leading-tight ${activeZone === z.id ? "text-foreground" : "text-muted-foreground"}`}>
+                <span className="text-xs font-semibold leading-tight uppercase tracking-wider">
                   {z.label.split("(")[0].trim()}
                 </span>
               </button>
               {i < zones.length - 1 && (
-                <div className="w-6 h-px bg-border mx-1 shrink-0" />
+                <div className="w-4 h-px bg-white/10 mx-2 shrink-0" />
               )}
             </div>
           ))}
@@ -266,67 +256,72 @@ export function AirportNav() {
         <AnimatePresence mode="wait">
           <motion.div
             key={`${terminal}-${activeZone}`}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm"
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="rounded-2xl border border-white/10 bg-zinc-900/40 backdrop-blur-md overflow-hidden shadow-2xl"
           >
             <div className="p-6 md:p-8" style={{ borderLeft: `4px solid ${zoneInfo.accent}` }}>
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
                 {/* Left: Header + description */}
-                <div>
-                  <div className="flex items-start gap-4 mb-4">
-                    <div
-                      className="size-14 rounded-2xl flex items-center justify-center text-2xl shrink-0"
-                      style={{ backgroundColor: `color-mix(in oklch, ${zoneInfo.accent} 15%, transparent)` }}
-                    >
-                      {zoneInfo.emoji}
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: zoneInfo.accent }}>
-                        {terminal} — {zoneInfo.label}
+                <div className="flex flex-col justify-between gap-5">
+                  <div>
+                    <div className="flex items-start gap-4 mb-4">
+                      <div
+                        className="size-14 rounded-2xl flex items-center justify-center shrink-0"
+                        style={{ backgroundColor: `color-mix(in oklch, ${zoneInfo.accent} 15%, transparent)` }}
+                      >
+                        <zoneInfo.icon className="size-7" style={{ color: zoneInfo.accent }} />
                       </div>
-                      <h3 className="text-xl font-bold text-foreground">{zoneInfo.label}</h3>
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: zoneInfo.accent }}>
+                          {terminal} — {zoneInfo.label}
+                        </div>
+                        <h3 className="text-xl font-bold text-white leading-tight">{zoneInfo.label}</h3>
+                      </div>
                     </div>
+                    <p className="text-white/60 text-sm leading-relaxed mb-4">{zoneInfo.description}</p>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed mb-4">{zoneInfo.description}</p>
+                  
                   <div
-                    className="rounded-xl p-4 text-sm text-muted-foreground italic border"
+                    className="rounded-xl p-4 text-xs text-white/70 border leading-relaxed bg-zinc-950/20"
                     style={{
-                      backgroundColor: `color-mix(in oklch, ${zoneInfo.accent} 6%, transparent)`,
-                      borderColor: `color-mix(in oklch, ${zoneInfo.accent} 20%, transparent)`,
+                      borderColor: `color-mix(in oklch, ${zoneInfo.accent} 15%, transparent)`,
                     }}
                   >
-                    <span className="font-semibold not-italic" style={{ color: zoneInfo.accent }}>💡 Consejo: </span>
+                    <span className="font-bold text-white block mb-1" style={{ color: zoneInfo.accent }}>💡 Consejo Útil:</span>
                     {zoneInfo.tip}
                   </div>
                 </div>
 
                 {/* Right: Services list */}
                 <div>
-                  <p className="text-sm font-semibold text-foreground mb-4">Servicios disponibles:</p>
+                  <p className="text-xs font-bold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-1.5">
+                    <Sparkles className="size-3.5 text-primary" />
+                    Servicios Destacados
+                  </p>
                   <div className="space-y-3">
                     {zoneInfo.services.map((s, i) => (
                       <motion.div
                         key={i}
                         initial={{ opacity: 0, x: 10 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.07 }}
-                        className="flex items-start gap-3 p-3 rounded-xl bg-muted/30 border border-border/50"
+                        transition={{ delay: i * 0.05 }}
+                        className="flex items-start gap-3.5 p-3.5 rounded-xl bg-zinc-950/20 border border-white/5 hover:border-white/10 transition-colors"
                       >
                         <div
-                          className="size-8 rounded-lg flex items-center justify-center shrink-0"
+                          className="size-8.5 rounded-lg flex items-center justify-center shrink-0"
                           style={{
-                            backgroundColor: `color-mix(in oklch, ${zoneInfo.accent} 15%, transparent)`,
+                            backgroundColor: `color-mix(in oklch, ${zoneInfo.accent} 12%, transparent)`,
                             color: zoneInfo.accent,
                           }}
                         >
                           {s.icon}
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-foreground">{s.name}</p>
-                          <p className="text-xs text-muted-foreground">{s.detail}</p>
+                          <p className="text-xs font-bold text-white mb-0.5 leading-snug">{s.name}</p>
+                          <p className="text-xs text-white/55 leading-relaxed">{s.detail}</p>
                         </div>
                       </motion.div>
                     ))}

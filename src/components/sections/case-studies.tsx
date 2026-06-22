@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -185,55 +185,51 @@ export function FAQ() {
   const filtered = activeTag ? FAQS.filter((f) => f.tag === activeTag) : FAQS;
 
   return (
-    <section id="faq" className="py-20 md:py-28 bg-muted/20 section-glow">
+    <section id="faq" className="py-16 md:py-20 bg-muted/20 section-glow border-t border-white/5">
       <div className="mx-auto max-w-4xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4 border border-primary/20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase mb-4 border border-white/10">
             <HelpCircle className="size-3.5" />
             Preguntas Frecuentes
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4">
-            ¿Tienes alguna duda?
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
+            ¿Tienes alguna <span className="runway-shimmer-text">duda?</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Las preguntas que más nos hacen los pasajeros antes de volar desde Barcelona.
-            Respuestas directas, sin rodeos.
+          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            Las dudas más habituales resueltas con respuestas directas para planificar tu paso por Barcelona-El Prat.
           </p>
         </motion.div>
 
         {/* Tag filters */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-center gap-2.5 mb-10">
           <button
             onClick={() => setActiveTag(null)}
-            className={`filter-tag-glow px-4 py-1.5 rounded-full border text-sm font-medium transition-all cursor-pointer ${
+            className={`inline-flex items-center px-4 py-2 rounded-full border text-xs font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer ${
               activeTag === null
-                ? "active"
-                : "border-border bg-background text-foreground hover:border-primary/40"
+                ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/10"
+                : "border-white/10 bg-zinc-900/60 text-white/70 hover:text-white hover:border-white/20"
             }`}
           >
             Todas
           </button>
           {uniqueTags.map((tag) => {
             const faq = FAQS.find((f) => f.tag === tag)!;
+            const isActive = activeTag === tag;
             return (
               <button
                 key={tag}
-                onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-all cursor-pointer ${
-                  activeTag === tag
-                    ? "text-white border-transparent"
-                    : "border-border bg-background text-foreground hover:border-primary/40"
-                }`}
+                onClick={() => setActiveTag(isActive ? null : tag)}
+                className={`inline-flex items-center px-4 py-2 rounded-full border text-xs font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer`}
                 style={
-                  activeTag === tag
-                    ? { backgroundColor: faq.tagColor, borderColor: faq.tagColor }
-                    : {}
+                  isActive
+                    ? { backgroundColor: faq.tagColor, borderColor: "transparent", color: "#fff", boxShadow: `0 4px 12px ${faq.tagColor}40` }
+                    : { borderColor: "rgba(255,255,255,0.1)", backgroundColor: "rgba(24,24,27,0.6)", color: "rgba(255,255,255,0.7)" }
                 }
               >
                 {tag}

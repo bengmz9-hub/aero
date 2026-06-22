@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { motion } from "framer-motion";
 import {
@@ -104,24 +104,24 @@ const QUICK_INFO = [
 
 export function UsefulLinks() {
   return (
-    <section id="links" className="py-20 md:py-28">
+    <section id="links" className="py-16 md:py-20 border-t border-white/5">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-14"
+          className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4 border border-primary/20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase mb-4 border border-white/10">
             <Globe className="size-3.5" />
-            Recursos Útiles
+            Enlaces
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4">
-            Todo lo que necesitas, a un clic
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
+            Todo lo que necesitas, <span className="runway-shimmer-text">a un clic</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Links directos a las webs oficiales más útiles para tu viaje desde y hacia El Prat.
+          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            Enlaces oficiales y herramientas de consulta rápida para programar tu viaje con seguridad.
           </p>
         </motion.div>
 

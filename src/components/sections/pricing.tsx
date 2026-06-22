@@ -1,14 +1,14 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, AlertTriangle, XCircle, ChevronRight, ChevronLeft, Shield } from "lucide-react";
+import { CheckCircle2, AlertTriangle, XCircle, ChevronRight, ChevronLeft, Shield, LucideIcon, Droplet, Briefcase, Clock, Inbox, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Step {
   id: number;
   title: string;
-  emoji: string;
+  icon: LucideIcon;
   accent: string;
   description: string;
   details: string[];
@@ -19,7 +19,7 @@ const STEPS: Step[] = [
   {
     id: 1,
     title: "Prepara los líquidos ANTES de llegar",
-    emoji: "💧",
+    icon: Droplet,
     accent: "var(--step-blue)",
     description: "La regla de los 100 ml es la más importante y la que más problemas causa. Prepárala en casa para no tener sorpresas.",
     details: [
@@ -35,7 +35,7 @@ const STEPS: Step[] = [
   {
     id: 2,
     title: "Identifica qué llevas en el bolso/mochila",
-    emoji: "🎒",
+    icon: Briefcase,
     accent: "var(--step-teal)",
     description: "Antes de llegar al control, ten claro qué necesitarás sacar. Esto ahorra tiempo y evita bloqueos.",
     details: [
@@ -51,18 +51,16 @@ const STEPS: Step[] = [
   {
     id: 3,
     title: "Llega con tiempo y elige bien la cola",
-    emoji: "⏰",
+    icon: Clock,
     accent: "var(--step-amber)",
     description: "El control de seguridad es el cuello de botella principal. Con tiempo y la actitud correcta, lo pasarás sin estrés.",
     details: [
       "Vuelos domésticos/Schengen: llega mínimo 90 minutos antes.",
       "Vuelos internacionales extra-Schengen: llega mínimo 2 horas antes.",
       "Observa qué colas avanzan más rápido — no siempre la más corta es la más rápida.",
-      "Hay colas específicas para Familias/Movilidad Reducida y Fast Track (Premium).",
-      "Puedes ir con tu teléfono en el bolsillo — los arcos modernos son más sensibles.",
-      "Si ves que la cola es larga, infórmalo al personal — pueden abrir más carriles.",
+      "Las colas de familias con niños o carritos suelen avanzar más despacio por el volumen de bultos.",
+      "Ten a mano la tarjeta de embarque (física o en el móvil con brillo al máximo).",
     ],
-    warning: "Si tu vuelo sale en menos de 45 minutos, díselo al personal de seguridad. Pueden darte prioridad.",
   },
   {
     id: 4,
@@ -161,25 +159,25 @@ export function Security() {
   const step = STEPS[activeStep];
 
   return (
-    <section id="seguridad" className="py-20 md:py-28 bg-muted/20 section-glow">
+    <section id="seguridad" className="py-16 md:py-20 bg-muted/20 section-glow border-t border-white/5">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-14"
+          className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4 border border-primary/20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase mb-4 border border-white/10">
             <Shield className="size-3.5" />
-            Control de Seguridad
+            Seguridad
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4">
-            Pasa el control sin estrés
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
+            Pasa el control <span className="runway-shimmer-text">sin estrés</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Guía paso a paso para ir desde la Zona Tierra a la Zona Aire con total tranquilidad.
-            Sigue estos 6 pasos y llegarás al gate relajado.
+            Sigue estos 6 pasos y llegarás a tu puerta de embarque relajado.
           </p>
         </motion.div>
 
@@ -256,10 +254,10 @@ export function Security() {
                 >
                   <div className="flex items-start gap-4">
                     <div
-                      className="size-14 rounded-2xl flex items-center justify-center text-3xl shrink-0"
+                      className="size-14 rounded-2xl flex items-center justify-center shrink-0"
                       style={{ backgroundColor: `color-mix(in oklch, ${step.accent} 15%, transparent)` }}
                     >
-                      {step.emoji}
+                      <step.icon className="size-7" style={{ color: step.accent }} />
                     </div>
                     <div>
                       <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: step.accent }}>
