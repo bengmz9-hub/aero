@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Bus,
   Train,
@@ -19,7 +19,7 @@ import {
 
 type FilterTag = "economico" | "rapido" | "equipaje" | "nocturno";
 
-interface Transport {
+interface TransportMode {
   id: string;
   name: string;
   duration: string;
@@ -41,14 +41,14 @@ const FILTERS = [
   { key: "nocturno" as const, label: "Servicio Nocturno", icon: Moon },
 ];
 
-const TRANSPORTS: Transport[] = [
+const TRANSPORTS: TransportMode[] = [
   {
     id: "aerobus",
     name: "Aerobús (A1 / A2)",
     duration: "30–40 min",
     price: "6,75 €",
     freq: "cada 5–10 min",
-    terminal: "T1 y T2",
+    terminal: "Terminales T1 y T2",
     tags: ["economico", "equipaje", "nocturno"],
     accent: "var(--transport-aerobus)",
     icon: <Bus className="size-6" />,
@@ -72,7 +72,7 @@ const TRANSPORTS: Transport[] = [
     duration: "40–50 min",
     price: "5,15 € (billete aeropuerto)",
     freq: "cada 7 min",
-    terminal: "T1 y T2",
+    terminal: "Terminales T1 y T2",
     tags: ["economico", "nocturno"],
     accent: "var(--transport-metro)",
     icon: <Train className="size-6" />,
@@ -95,7 +95,7 @@ const TRANSPORTS: Transport[] = [
     duration: "25–40 min",
     price: "35–50 € (tarifa oficial)",
     freq: "Inmediato",
-    terminal: "T1 y T2",
+    terminal: "Terminales T1 y T2",
     tags: ["rapido", "equipaje"],
     accent: "var(--transport-taxi)",
     icon: <Car className="size-6" />,
@@ -118,7 +118,7 @@ const TRANSPORTS: Transport[] = [
     duration: "25–45 min",
     price: "20–40 € (tarifa dinámica)",
     freq: "Bajo demanda",
-    terminal: "T1 y T2",
+    terminal: "Terminales T1 y T2",
     tags: ["rapido", "equipaje"],
     accent: "var(--transport-vtc)",
     icon: <Wifi className="size-6" />,
@@ -141,7 +141,7 @@ const TRANSPORTS: Transport[] = [
     duration: "30–35 min",
     price: "4,60 € (o T-Casual)",
     freq: "cada 30 min",
-    terminal: "Solo T2",
+    terminal: "Solo Terminal T2",
     tags: ["economico"],
     accent: "var(--transport-train)",
     icon: <Train className="size-6" />,
@@ -163,7 +163,7 @@ const TRANSPORTS: Transport[] = [
     duration: "Variable",
     price: "Desde 5 €/h · Larga estancia desde 14 €/día",
     freq: "—",
-    terminal: "T1 y T2",
+    terminal: "Terminales T1 y T2",
     tags: ["equipaje", "rapido"],
     accent: "var(--transport-car)",
     icon: <Car className="size-6" />,
@@ -181,16 +181,9 @@ const TRANSPORTS: Transport[] = [
 ];
 
 export function Transport() {
-  const [activeFilter, setActiveFilter] = useState<FilterTag | null>(null);
+  const [selectedTransport, setSelectedTransport] = useState<string>("aerobus");
 
-  const sorted = useMemo(() => {
-    if (!activeFilter) return TRANSPORTS;
-    return [...TRANSPORTS].sort((a, b) => {
-      const aM = a.tags.includes(activeFilter) ? 0 : 1;
-      const bM = b.tags.includes(activeFilter) ? 0 : 1;
-      return aM - bM;
-    });
-  }, [activeFilter]);
+  const activeTransport = TRANSPORTS.find((t) => t.id === selectedTransport) ?? TRANSPORTS[0];
 
   return (
     <section id="transporte" className="py-10 md:py-12 section-glow border-t border-white/5">
@@ -209,166 +202,159 @@ export function Transport() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
             Cómo llegar y salir <span className="runway-shimmer-text">de El Prat</span>
           </h2>
-          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-sans">
             Compara las opciones de transporte oficiales entre Barcelona y el aeropuerto.
-            Filtra según tus preferencias para encontrar tu trayecto ideal.
+            Selecciona una opción para ver detalles, tarifas y ventajas.
           </p>
         </motion.div>
 
-        {/* Filter tags */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-          {FILTERS.map((f) => {
-            const Icon = f.icon;
-            const isActive = activeFilter === f.key;
-            return (
-              <button
-                key={f.key}
-                onClick={() => setActiveFilter(isActive ? null : f.key)}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-xs font-semibold tracking-wide uppercase transition-all duration-300 cursor-pointer ${
-                  isActive
-                    ? "bg-primary text-primary-foreground border-primary scale-105"
-                    : "border-white/10 bg-zinc-900/60 text-white/70 hover:text-white hover:border-white/20"
-                }`}
+        {/* Transport Mode Switcher */}
+        <div className="flex overflow-x-auto gap-2.5 justify-start md:justify-center items-center pb-4 mb-8 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+          {TRANSPORTS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setSelectedTransport(t.id)}
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all duration-300 cursor-pointer border shrink-0 ${
+                selectedTransport === t.id
+                  ? "bg-zinc-900/60 border-primary shadow-lg shadow-primary/5 text-white"
+                  : "border-white/5 hover:border-white/15 text-white/50 hover:text-white/80"
+              }`}
+            >
+              <div
+                className="size-8 rounded-lg flex items-center justify-center shrink-0 transition-all"
+                style={{
+                  backgroundColor: selectedTransport === t.id ? `color-mix(in oklch, ${t.accent} 20%, transparent)` : "transparent",
+                  color: selectedTransport === t.id ? t.accent : "var(--muted-foreground)",
+                }}
               >
-                <Icon className="size-3.5 shrink-0" />
-                {f.label}
-              </button>
-            );
-          })}
+                {t.icon}
+              </div>
+              <span className="text-xs font-semibold leading-tight uppercase tracking-wider">
+                {t.name.split("/")[0].split("(")[0].trim()}
+              </span>
+            </button>
+          ))}
         </div>
 
-        {/* Cards */}
-        <LayoutGroup>
-          <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <AnimatePresence mode="popLayout">
-              {sorted.map((t) => {
-                const isMatch = activeFilter ? t.tags.includes(activeFilter) : true;
-                return (
-                  <motion.article
-                    layout
-                    key={t.id}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{
-                      opacity: isMatch ? 1 : 0.35,
-                      scale: 1,
-                      transition: { duration: 0.35, ease: "easeInOut" },
-                    }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="group relative rounded-xl border border-white/10 bg-zinc-900/40 backdrop-blur-md hover:shadow-2xl hover:shadow-primary/5 hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col justify-between"
-                  >
-                    {/* Accent top bar */}
-                    <div className="h-1" style={{ backgroundColor: t.accent }} />
-
-                    <div className="p-6 flex flex-col justify-between flex-1 gap-6">
-                      {/* Header */}
-                      <div>
-                        <div className="flex items-start justify-between mb-4">
-                          <div
-                            className="flex items-center justify-center size-12 rounded-xl text-primary"
-                            style={{
-                              backgroundColor: `color-mix(in oklch, ${t.accent} 12%, transparent)`,
-                              color: t.accent,
-                            }}
-                          >
-                            {t.icon}
-                          </div>
-                          <div className="text-right flex flex-col gap-1">
-                            <div className="text-xs text-white/60 flex items-center justify-end gap-1.5 font-medium">
-                              <Clock className="size-3.5 text-primary" />
-                              {t.duration}
-                            </div>
-                            <div className="text-xs text-white/60 flex items-center justify-end gap-1.5 font-semibold">
-                              <Euro className="size-3.5 text-primary" />
-                              {t.price}
-                            </div>
-                          </div>
-                        </div>
-
-                        <h3 className="text-lg font-bold text-white mb-1 group-hover:text-primary transition-colors">
-                          {t.name}
-                        </h3>
-                        <div className="flex items-center gap-2 text-xs text-white/40 mb-4">
-                          <span>Frecuencia: {t.freq}</span>
-                          <span className="text-white/10">·</span>
-                          <span style={{ color: t.accent }} className="font-medium">{t.terminal}</span>
-                        </div>
-                      </div>
-
-                      {/* Pros & Cons */}
-                      <div className="flex flex-col gap-5">
-                        {/* Pros */}
-                        <div>
-                          <p className="text-xs font-bold text-white mb-2 flex items-center gap-1.5">
-                            <CheckCircle2 className="size-3.5 text-emerald-400" />
-                            Ventajas
-                          </p>
-                          <ul className="space-y-2">
-                            {t.pros.slice(0, 3).map((p) => (
-                              <li key={p} className="text-xs text-white/60 flex items-start gap-2 leading-relaxed">
-                                <span className="text-emerald-400 shrink-0 mt-0.5">✓</span>
-                                {p}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Cons */}
-                        <div>
-                          <p className="text-xs font-bold text-white mb-2 flex items-center gap-1.5">
-                            <XCircle className="size-3.5 text-red-400" />
-                            Inconvenientes
-                          </p>
-                          <ul className="space-y-2">
-                            {t.cons.slice(0, 2).map((c) => (
-                              <li key={c} className="text-xs text-white/50 flex items-start gap-2 leading-relaxed">
-                                <span className="text-red-400/80 shrink-0 mt-0.5">✗</span>
-                                {c}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-
-                      {/* Tip */}
+        {/* Single Detail Panel */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedTransport}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="rounded-2xl border border-white/10 bg-zinc-900/40 backdrop-blur-md overflow-hidden shadow-2xl"
+          >
+            <div className="p-6 md:p-8" style={{ borderLeft: `4px solid ${activeTransport.accent}` }}>
+              <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+                {/* Left: Info, Price, Duration, Tip */}
+                <div className="flex flex-col justify-between gap-6">
+                  <div>
+                    <div className="flex items-start gap-4 mb-4">
                       <div
-                        className="rounded-lg p-3.5 text-xs text-white/60 border mt-2 leading-relaxed"
+                        className="size-14 rounded-2xl flex items-center justify-center shrink-0"
                         style={{
-                          backgroundColor: `color-mix(in oklch, ${t.accent} 6%, transparent)`,
-                          borderColor: `color-mix(in oklch, ${t.accent} 15%, transparent)`,
+                          backgroundColor: `color-mix(in oklch, ${activeTransport.accent} 15%, transparent)`,
+                          color: activeTransport.accent
                         }}
                       >
-                        <span className="font-bold text-white block mb-1" style={{ color: t.accent }}>💡 Consejo Práctico:</span>
-                        {t.tip}
+                        {activeTransport.icon}
                       </div>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 pt-3 border-t border-white/5">
-                        {t.tags.map((tag) => {
-                          const f = FILTERS.find((fi) => fi.key === tag);
-                          if (!f) return null;
-                          const TagIcon = f.icon;
-                          return (
-                            <span
-                              key={tag}
-                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[9px] font-bold tracking-wider uppercase border ${
-                                activeFilter === tag
-                                  ? "bg-primary/20 text-primary border-primary/30"
-                                  : "bg-white/5 text-white/40 border-white/5"
-                              }`}
-                            >
-                              <TagIcon className="size-3" />
-                              {f.label}
-                            </span>
-                          );
-                        })}
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: activeTransport.accent }}>
+                          {activeTransport.terminal} · Frecuencia: {activeTransport.freq}
+                        </div>
+                        <h3 className="text-2xl font-extrabold text-white leading-tight">{activeTransport.name}</h3>
                       </div>
                     </div>
-                  </motion.article>
-                );
-              })}
-            </AnimatePresence>
+                    
+                    {/* Specs Grid */}
+                    <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-zinc-950/20 border border-white/5 mb-4">
+                      <div>
+                        <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider block mb-1">Duración</span>
+                        <span className="text-sm font-semibold text-white flex items-center gap-1.5">
+                          <Clock className="size-4 text-primary shrink-0" />
+                          {activeTransport.duration}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider block mb-1">Precio aproximado</span>
+                        <span className="text-sm font-semibold text-white flex items-center gap-1.5">
+                          <Euro className="size-4 text-primary shrink-0" />
+                          {activeTransport.price}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div
+                    className="rounded-xl p-4 text-xs text-white/70 border leading-relaxed bg-zinc-950/20"
+                    style={{
+                      borderColor: `color-mix(in oklch, ${activeTransport.accent} 15%, transparent)`,
+                    }}
+                  >
+                    <span className="font-bold text-white block mb-1" style={{ color: activeTransport.accent }}>💡 Consejo Práctico:</span>
+                    {activeTransport.tip}
+                  </div>
+
+                  {/* Category badges */}
+                  <div className="flex flex-wrap gap-2 pt-3 border-t border-white/5">
+                    {activeTransport.tags.map((tag) => {
+                      const f = FILTERS.find((fi) => fi.key === tag);
+                      if (!f) return null;
+                      const TagIcon = f.icon;
+                      return (
+                        <span
+                          key={tag}
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[9px] font-bold tracking-wider uppercase border bg-white/5 text-white/40 border-white/5"
+                        >
+                          <TagIcon className="size-3 shrink-0" />
+                          {f.label}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Right: Pros and Cons */}
+                <div className="flex flex-col gap-6">
+                  {/* Pros */}
+                  <div>
+                    <p className="text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                      <CheckCircle2 className="size-4 text-emerald-400 shrink-0" />
+                      Ventajas del servicio
+                    </p>
+                    <ul className="space-y-2.5">
+                      {activeTransport.pros.map((p) => (
+                        <li key={p} className="text-xs text-white/60 flex items-start gap-2 leading-relaxed">
+                          <span className="text-emerald-400 shrink-0 mt-0.5">✓</span>
+                          {p}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Cons */}
+                  <div>
+                    <p className="text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                      <XCircle className="size-4 text-red-400 shrink-0" />
+                      Puntos en contra
+                    </p>
+                    <ul className="space-y-2.5">
+                      {activeTransport.cons.map((c) => (
+                        <li key={c} className="text-xs text-white/50 flex items-start gap-2 leading-relaxed">
+                          <span className="text-red-400/80 shrink-0 mt-0.5">✗</span>
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </motion.div>
-        </LayoutGroup>
+        </AnimatePresence>
       </div>
     </section>
   );
