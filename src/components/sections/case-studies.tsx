@@ -1,272 +1,263 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Star,
-  ChevronDown,
-  Building2,
-  Quote,
-} from "lucide-react";
+import { ChevronDown, HelpCircle } from "lucide-react";
 
-interface CaseStudy {
+interface FAQ {
   id: string;
-  company: string;
-  industry: string;
-  participants: number;
-  experience: string;
-  rating: number;
-  headline: string;
-  quote: string;
-  author: string;
-  role: string;
-  metric: string;
-  metricValue: string;
-  accent: string;
+  question: string;
+  answer: string;
+  tag: string;
+  tagColor: string;
 }
 
-const CASE_STUDIES: CaseStudy[] = [
+const FAQS: FAQ[] = [
   {
-    id: "stripe-case",
-    company: "Finova Group",
-    industry: "Financial Services",
-    participants: 85,
-    experience: "The Gala Affair",
-    rating: 5,
-    headline: "Turned skeptics into advocates in 2 hours",
-    quote:
-      "We were hesitant about game-based team building — it felt too casual for our culture. EnigmaWorks completely changed that perception. The sophistication of the narrative and the way it challenged our leadership team was extraordinary. Our VP of Engineering, who never participates in voluntary events, was the most engaged person in the room.",
-    author: "Sarah Chen",
-    role: "Head of People & Culture",
-    metric: "Engagement Score",
-    metricValue: "97%",
-    accent: "var(--exp-teal)",
+    id: "agua",
+    tag: "Líquidos",
+    tagColor: "var(--step-blue)",
+    question: "¿Puedo llevar agua en el equipaje de mano?",
+    answer:
+      "No puedes pasar agua comprada ANTES del control de seguridad. Independientemente de si la botella está llena o medio vacía, si es mayor de 100ml la tirarán. La solución: vacía la botella antes del control y rellénala en las fuentes de agua potable que hay dentro de la Zona Aire (son gratuitas), o cómprala dentro del aeropuerto una vez pasado el control. También puedes llevar una botella vacía y reutilizable.",
   },
   {
-    id: "tech-case",
-    company: "NovaTech Labs",
-    industry: "Technology",
-    participants: 42,
-    experience: "Codebreakers: Enigma Unlocked",
-    rating: 5,
-    headline: "Broke down silos between engineering teams",
-    quote:
-      "Our backend and frontend teams rarely collaborated outside of sprint planning. After Codebreakers, we saw a measurable shift in cross-team communication. The shared experience created reference points and inside jokes that still come up in standups six months later. Best team-building investment we have ever made.",
-    author: "Marcus Rivera",
-    role: "CTO",
-    metric: "Cross-team Collab",
-    metricValue: "+62%",
-    accent: "var(--exp-crimson)",
+    id: "ordenador-maleta",
+    tag: "Electrónica",
+    tagColor: "var(--step-purple)",
+    question: "¿Puedo llevar el ordenador dentro de la mochila sin sacarlo?",
+    answer:
+      "En la mayoría de controles en España y Europa, los ordenadores portátiles y tablets grandes deben salir de la mochila y colocarse en su propia bandeja separada. Esto se debe a que el escáner de rayos X necesita verlos con claridad. Algunos aeropuertos tienen escáneres de nueva generación (tomografía) donde no hace falta, pero en El Prat lo más seguro es sacar siempre el ordenador. ¿Por qué? Porque si el agente no lo ve bien, tendrás que abrir la mochila y hacerlo de todas formas, perdiendo más tiempo.",
   },
   {
-    id: "consulting-case",
-    company: "Meridian Consulting",
-    industry: "Management Consulting",
-    participants: 120,
-    experience: "Arctic Expedition Lost",
-    rating: 5,
-    headline: "Revealed hidden leaders across the organization",
-    quote:
-      "We needed an activity that could handle 120 people across four offices simultaneously. The Arctic Expedition not only managed that logistics flawlessly, but it surfaced leadership qualities in junior consultants that we had completely overlooked. Three of those individuals have since been promoted into team-lead roles.",
-    author: "Dr. Helena Krause",
-    role: "Managing Partner",
-    metric: "Leaders Identified",
-    metricValue: "14",
-    accent: "var(--exp-gold)",
+    id: "liquidos-ml",
+    tag: "Líquidos",
+    tagColor: "var(--step-blue)",
+    question: "¿Cuántos mililitros puede tener cada recipiente de líquido?",
+    answer:
+      "La regla es sencilla: cada recipiente individual puede contener un máximo de 100 ml (o 100g para productos sólidos con textura de gel/pasta). El tamaño del envase es lo que importa, NO la cantidad de líquido dentro. Es decir, una botella de 200ml aunque esté llena solo a la mitad NO puede pasar. Todos tus recipientes de hasta 100ml deben caber en UNA bolsa zip de cierre hermético de 1 litro (aproximadamente 20x20 cm). Solo se permite UNA bolsa por pasajero.",
   },
   {
-    id: "healthcare-case",
-    company: "VitalPath Health",
-    industry: "Healthcare",
-    participants: 30,
-    experience: "The Inventor's Lab",
-    rating: 5,
-    headline: "Sparked innovation in a risk-averse environment",
-    quote:
-      "Healthcare is naturally cautious, and our team struggled with brainstorming freely. The Inventor's Lab created a psychologically safe space where even the most reserved nurses and admins contributed bold ideas. The creativity exercises have become part of our quarterly offsites, and our innovation pipeline has tripled.",
-    author: "James Okafor",
-    role: "Chief Innovation Officer",
-    metric: "Ideas Generated",
-    metricValue: "3x",
-    accent: "var(--exp-purple)",
+    id: "medicacion",
+    tag: "Líquidos",
+    tagColor: "var(--step-blue)",
+    question: "¿Puedo llevar medicación líquida en más de 100ml?",
+    answer:
+      "Sí, los medicamentos líquidos con receta médica son una excepción a la regla de los 100ml. Debes presentar la medicación junto a la receta o prescripción médica en el control de seguridad. El personal la revisará y, si todo es correcto, podrás pasar con la cantidad necesaria para el viaje. Lleva siempre el envase original con el etiquetado farmacéutico. También aplica a insulina, jeringas (con certificado médico) y otros tratamientos especiales.",
+  },
+  {
+    id: "leche-bebe",
+    tag: "Familias",
+    tagColor: "var(--step-green)",
+    question: "¿Puedo llevar leche o comida para bebé?",
+    answer:
+      "Sí, la leche materna, leche de fórmula, agua para bebés y comida para bebés son excepciones a la regla de líquidos. Puedes llevarlos en cantidad razonable para la duración del viaje. El personal puede pedirte que abras el envase y que lo pruebes tú mismo (una pequeña cantidad). No hace falta que lleves receta médica para esto, pero sí que tengas al bebé contigo. Si el niño no viaja contigo, puede haber complicaciones — lleva documentación médica.",
+  },
+  {
+    id: "tiempo-anticipacion",
+    tag: "Planificación",
+    tagColor: "var(--step-amber)",
+    question: "¿Cuánto tiempo antes debo estar en el aeropuerto?",
+    answer:
+      "La recomendación oficial de AENA y la mayoría de aerolíneas es: vuelos nacionales (Schengen) → 90 minutos antes de la hora de salida; vuelos internacionales extra-Schengen (UK, EEUU, Latinoamérica, etc.) → 2-3 horas antes. Estos tiempos son para tener el proceso de check-in, facturación de maletas, control de seguridad y llegada al gate completado con margen. En temporada alta (verano, Navidades, Semana Santa) añade 30-45 minutos extra a estas estimaciones.",
+  },
+  {
+    id: "cinturon-zapatos",
+    tag: "Seguridad",
+    tagColor: "var(--step-red)",
+    question: "¿Tengo que quitarme el cinturón y los zapatos?",
+    answer:
+      "El cinturón metálico normalmente sí debes quitártelo y ponerlo en la bandeja — activa el detector. Los zapatos en España y Europa NO es obligatorio quitarlos por norma general (a diferencia de EE.UU.), aunque si el arco de detección pita, el personal puede pedirte que te los quites para comprobarlo. Zapatos con mucho metal o suelas muy gruesas son más susceptibles de activar el detector. Consejo: lleva zapatos fáciles de poner/quitar si viajas mucho.",
+  },
+  {
+    id: "powerbank",
+    tag: "Electrónica",
+    tagColor: "var(--step-purple)",
+    question: "¿Dónde va el powerbank? ¿Mano o bodega?",
+    answer:
+      "Los powerbanks (baterías externas) SIEMPRE deben ir en el equipaje de mano, NUNCA en la maleta que va a bodega. Esto es por normativa de seguridad aérea internacional (las baterías de litio pueden inflamarse y en bodega no hay forma de actuar). En cuanto a capacidad: hasta 100Wh se puede llevar sin problema; entre 100Wh y 160Wh necesitas permiso de la aerolínea (consúltalo al hacer la reserva); por encima de 160Wh está completamente prohibido. La mayoría de powerbanks domésticos están por debajo de 100Wh.",
+  },
+  {
+    id: "comida-mano",
+    tag: "Líquidos",
+    tagColor: "var(--step-blue)",
+    question: "¿Puedo llevar comida sólida en el equipaje de mano?",
+    answer:
+      "La comida sólida en general puede pasar el control de seguridad sin problema — sándwiches, fruta entera, snacks, galletas, chocolate, etc. Lo que tiene restricción es la comida con textura líquida o semilíquida: mermeladas, yogures, sopas, natillas, etc. si superan los 100ml. Atención: los quesos blandos tipo brie o philadelphia también pueden ser problemáticos. Si llevas comida en tápers, ábrelos si el agente lo solicita. Los alimentos congelados son generalmente OK.",
+  },
+  {
+    id: "check-in-online",
+    tag: "Planificación",
+    tagColor: "var(--step-amber)",
+    question: "¿Puedo hacer el check-in online y no ir al mostrador?",
+    answer:
+      "Sí, y es muy recomendable. La mayoría de aerolíneas permiten el check-in online desde 24h (algunas hasta 48h) antes del vuelo. Si solo llevas equipaje de mano, puedes ir directamente al control de seguridad con tu tarjeta de embarque digital (en el móvil o impresa). Si necesitas facturar maleta, busca los kioscos de drop de equipaje (cintas automáticas) de tu aerolínea — son mucho más rápidos que hacer cola en el mostrador. Guarda la tarjeta de embarque en tu teléfono Y tenla descargada (sin necesidad de internet) por si acaso.",
+  },
+  {
+    id: "wifi",
+    tag: "Servicios",
+    tagColor: "var(--step-teal)",
+    question: "¿Hay WiFi gratuito en el aeropuerto?",
+    answer:
+      "Sí, el Aeropuerto de Barcelona El Prat tiene WiFi gratuito en toda la terminal, tanto en Zona Tierra como en Zona Aire. La red se llama Wifi-BCN o similar. No tiene contraseña y la conexión es directa — simplemente selecciónala en tu dispositivo y acepta los términos de uso. La velocidad es suficiente para uso normal (email, redes sociales, streaming ligero). Para videoconferencias importantes o trabajos que requieran alta velocidad, considera usar tus datos móviles.",
+  },
+  {
+    id: "perdida-maleta",
+    tag: "Incidencias",
+    tagColor: "var(--step-red)",
+    question: "¿Qué hago si mi maleta no aparece en la cinta de llegadas?",
+    answer:
+      "Si tu maleta no aparece en 30-40 minutos desde que empezó a salir el equipaje de tu vuelo, NO salgas de la Zona de Llegadas. Dirígete al mostrador de Lost & Found (Objetos Perdidos / Equipajes) antes de salir. Está situado en la zona de llegadas. Necesitarás: tu tarjeta de embarque, el talón de equipaje (la pegatina que te dan en facturación) y tu documento de identidad. Te abrirán un expediente (PIR). Si la maleta aparece en los próximos días, la aerolínea la entregará en tu domicilio gratuitamente. Guarda el número de expediente.",
   },
 ];
 
-function CaseStudyCard({ study }: { study: CaseStudy }) {
+function FAQCard({ faq }: { faq: FAQ }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <motion.article
       layout
-      className="group rounded-xl border border-border bg-card overflow-hidden hover:shadow-lg hover:shadow-primary/5 dark:hover:shadow-primary/10 transition-all duration-300"
+      className="rounded-xl border border-border bg-card overflow-hidden hover:border-primary/30 dark:hover:border-primary/20 transition-colors duration-200"
     >
-      {/* Accent top bar */}
-      <div
-        className="h-1"
-        style={{ backgroundColor: study.accent }}
-      />
-
-      <div className="p-6">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div
-              className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-bold text-sm dark:text-foreground/90"
-              style={{ backgroundColor: study.accent }}
-            >
-              {study.company.slice(0, 2).toUpperCase()}
-            </div>
-            <div>
-              <h3 className="font-semibold text-foreground">{study.company}</h3>
-              <p className="text-xs text-muted-foreground flex items-center gap-1">
-                <Building2 className="size-3" />
-                {study.industry}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-0.5">
-            {Array.from({ length: study.rating }).map((_, i) => (
-              <Star
-                key={i}
-                className="size-3.5 fill-amber text-amber"
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Headline */}
-        <p className="text-sm font-medium text-foreground mb-3">
-          {study.headline}
-        </p>
-
-        {/* Meta */}
-        <div className="flex flex-wrap gap-3 mb-4 text-xs text-muted-foreground">
-          <span>{study.participants} participants</span>
-          <span className="text-border">|</span>
-          <span>{study.experience}</span>
-        </div>
-
-        {/* Metric */}
-        <div className="rounded-lg bg-muted/50 border border-border p-3 mb-4 flex items-center justify-between">
-          <span className="text-xs text-muted-foreground font-medium">
-            {study.metric}
-          </span>
-          <span
-            className="text-2xl font-bold"
-            style={{ color: study.accent }}
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-start justify-between gap-4 p-5 text-left cursor-pointer group"
+        aria-expanded={expanded}
+      >
+        <div className="flex items-start gap-3 flex-1">
+          <div
+            className="size-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+            style={{
+              backgroundColor: `color-mix(in oklch, ${faq.tagColor} 15%, transparent)`,
+              color: faq.tagColor,
+            }}
           >
-            {study.metricValue}
-          </span>
+            <HelpCircle className="size-4" />
+          </div>
+          <div>
+            <span
+              className="text-xs font-semibold uppercase tracking-wide mb-1 block"
+              style={{ color: faq.tagColor }}
+            >
+              {faq.tag}
+            </span>
+            <h3 className="text-sm md:text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug">
+              {faq.question}
+            </h3>
+          </div>
         </div>
-
-        {/* Expand button */}
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="w-full flex items-center justify-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors cursor-pointer py-1"
+        <motion.div
+          animate={{ rotate: expanded ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="shrink-0 mt-1"
         >
-          {expanded ? "Hide Testimonial" : "Read Full Testimonial"}
-          <motion.span
-            animate={{ rotate: expanded ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
+          <ChevronDown className="size-5 text-muted-foreground" />
+        </motion.div>
+      </button>
+
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="overflow-hidden"
           >
-            <ChevronDown className="size-4" />
-          </motion.span>
-        </button>
-
-        {/* Expanded quote */}
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <div className="pt-4 mt-4 border-t border-border">
-                {/* Speech mark */}
-                <motion.div
-                  initial={{ scale: 0.3, rotate: -12, opacity: 0 }}
-                  animate={{ scale: 1, rotate: 0, opacity: 1 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.1,
-                    type: "spring",
-                    stiffness: 200,
-                  }}
-                  className="mb-3"
-                >
-                  <Quote
-                    className="size-8"
-                    style={{ color: study.accent, opacity: 0.3 }}
-                  />
-                </motion.div>
-
-                <p className="text-sm text-muted-foreground leading-relaxed italic mb-4">
-                  &ldquo;{study.quote}&rdquo;
-                </p>
-
-                <div className="flex items-center gap-2">
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-white dark:text-foreground/90 text-xs font-bold"
-                    style={{ backgroundColor: study.accent }}
-                  >
-                    {study.author
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">
-                      {study.author}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {study.role}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+            <div className="px-5 pb-5 pt-0">
+              <div
+                className="w-full h-px mb-4"
+                style={{ backgroundColor: `color-mix(in oklch, ${faq.tagColor} 25%, var(--border))` }}
+              />
+              <p className="text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.article>
   );
 }
 
-export function CaseStudies() {
+export function FAQ() {
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  const uniqueTags = Array.from(new Set(FAQS.map((f) => f.tag)));
+  const filtered = activeTag ? FAQS.filter((f) => f.tag === activeTag) : FAQS;
+
   return (
-    <section id="case-studies" className="py-20 md:py-28 bg-muted/30">
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
-        {/* Section header */}
+    <section id="faq" className="py-20 md:py-28 bg-muted/20 section-glow">
+      <div className="mx-auto max-w-4xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-14"
+          className="text-center mb-12"
         >
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4 border border-primary/20">
+            <HelpCircle className="size-3.5" />
+            Preguntas Frecuentes
+          </div>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4">
-            Trusted by Leading Teams
+            ¿Tienes alguna duda?
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Real results from real companies. Hear how organizations across
-            industries transformed their team dynamics through immersive experiences.
+            Las preguntas que más nos hacen los pasajeros antes de volar desde Barcelona.
+            Respuestas directas, sin rodeos.
           </p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 gap-6">
-          {CASE_STUDIES.map((study, i) => (
-            <motion.div
-              key={study.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-            >
-              <CaseStudyCard study={study} />
-            </motion.div>
-          ))}
+        {/* Tag filters */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <button
+            onClick={() => setActiveTag(null)}
+            className={`filter-tag-glow px-4 py-1.5 rounded-full border text-sm font-medium transition-all cursor-pointer ${
+              activeTag === null
+                ? "active"
+                : "border-border bg-background text-foreground hover:border-primary/40"
+            }`}
+          >
+            Todas
+          </button>
+          {uniqueTags.map((tag) => {
+            const faq = FAQS.find((f) => f.tag === tag)!;
+            return (
+              <button
+                key={tag}
+                onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-all cursor-pointer ${
+                  activeTag === tag
+                    ? "text-white border-transparent"
+                    : "border-border bg-background text-foreground hover:border-primary/40"
+                }`}
+                style={
+                  activeTag === tag
+                    ? { backgroundColor: faq.tagColor, borderColor: faq.tagColor }
+                    : {}
+                }
+              >
+                {tag}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* FAQ list */}
+        <div className="space-y-3">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((faq, i) => (
+              <motion.div
+                key={faq.id}
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3, delay: i * 0.04 }}
+              >
+                <FAQCard faq={faq} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
     </section>

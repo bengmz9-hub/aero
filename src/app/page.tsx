@@ -1,12 +1,12 @@
-"use client";
+﻿"use client";
 
 import { Navbar } from "@/components/sections/navbar";
 import { Hero } from "@/components/sections/hero";
-import { Experiences } from "@/components/sections/experiences";
-import { Pricing } from "@/components/sections/pricing";
-import { Customization } from "@/components/sections/customization";
-import { CaseStudies } from "@/components/sections/case-studies";
-import { CTASection } from "@/components/sections/cta";
+import { Transport } from "@/components/sections/experiences";
+import { Security } from "@/components/sections/pricing";
+import { AirportNav } from "@/components/sections/customization";
+import { FAQ } from "@/components/sections/case-studies";
+import { UsefulLinks } from "@/components/sections/cta";
 import { Footer } from "@/components/sections/footer";
 
 export default function Home() {
@@ -15,11 +15,11 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
-        <Experiences />
-        <Pricing />
-        <Customization />
-        <CaseStudies />
-        <CTASection />
+        <Transport />
+        <Security />
+        <AirportNav />
+        <FAQ />
+        <UsefulLinks />
       </main>
       <Footer />
     </div>

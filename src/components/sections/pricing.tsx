@@ -1,123 +1,168 @@
-"use client";
+﻿"use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Slider } from "@/components/ui/slider";
+import { CheckCircle2, AlertTriangle, XCircle, ChevronRight, ChevronLeft, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import {
-  Building2,
-  Users,
-  Check,
-  ArrowRight,
-  Sparkles,
-  Crown,
-  Rocket,
-} from "lucide-react";
 
-const TIERS = [
+interface Step {
+  id: number;
+  title: string;
+  emoji: string;
+  accent: string;
+  description: string;
+  details: string[];
+  warning?: string;
+}
+
+const STEPS: Step[] = [
   {
-    name: "Starter",
-    size: "10–24 people",
-    basePrice: 45,
-    icon: <Rocket className="size-5" />,
-    features: [
-      "1 experience of your choice",
-      "Dedicated game host",
-      "Digital clue kits included",
-      "Post-game debrief summary",
-      "Basic team analytics report",
+    id: 1,
+    title: "Prepara los líquidos ANTES de llegar",
+    emoji: "💧",
+    accent: "var(--step-blue)",
+    description: "La regla de los 100 ml es la más importante y la que más problemas causa. Prepárala en casa para no tener sorpresas.",
+    details: [
+      "Cada recipiente individual debe ser de máximo 100 ml (aunque esté medio vacío).",
+      "Todos los líquidos deben caber en UNA sola bolsa zip transparente de 1 litro.",
+      "Solo se permite UNA bolsa por persona.",
+      "La bolsa debe sacarse fácilmente del equipaje de mano.",
+      "Geles, cremas, pasta de dientes, colonia, desodorante spray — todo cuenta como líquido.",
+      "¿No tienes bolsa zip? Las venden en el propio aeropuerto, pero es mejor llevarla preparada.",
+    ],
+    warning: "Si un recipiente tiene 200ml pero está medio vacío, NO puede pasar. Lo que importa es la capacidad total del envase, no la cantidad que contiene.",
+  },
+  {
+    id: 2,
+    title: "Identifica qué llevas en el bolso/mochila",
+    emoji: "🎒",
+    accent: "var(--step-teal)",
+    description: "Antes de llegar al control, ten claro qué necesitarás sacar. Esto ahorra tiempo y evita bloqueos.",
+    details: [
+      "Ordenador portátil → FUERA de la mochila, en su propia bandeja.",
+      "Tablet grande (iPad, etc.) → también FUERA.",
+      "Cámaras grandes (DSLR, mirrorless) → FUERA.",
+      "Móvil → puedes dejarlo en la mochila o en tu bolsillo (lo pasan por el escáner).",
+      "Bolsa de líquidos → FUERA en bandeja separada.",
+      "Chaqueta, cinturón, monedas → al llevar todo al escáner.",
+      "Cargadores, cables, powerbanks → pueden quedarse dentro de la mochila normalmente.",
     ],
   },
   {
-    name: "Professional",
-    size: "25–49 people",
-    basePrice: 38,
-    icon: <Sparkles className="size-5" />,
-    popular: true,
-    features: [
-      "2 experiences or 1 custom scenario",
-      "Senior game host + assistant",
-      "Premium physical props shipped",
-      "Detailed team-performance report",
-      "Priority scheduling",
-      "Follow-up workshop recommendation",
+    id: 3,
+    title: "Llega con tiempo y elige bien la cola",
+    emoji: "⏰",
+    accent: "var(--step-amber)",
+    description: "El control de seguridad es el cuello de botella principal. Con tiempo y la actitud correcta, lo pasarás sin estrés.",
+    details: [
+      "Vuelos domésticos/Schengen: llega mínimo 90 minutos antes.",
+      "Vuelos internacionales extra-Schengen: llega mínimo 2 horas antes.",
+      "Observa qué colas avanzan más rápido — no siempre la más corta es la más rápida.",
+      "Hay colas específicas para Familias/Movilidad Reducida y Fast Track (Premium).",
+      "Puedes ir con tu teléfono en el bolsillo — los arcos modernos son más sensibles.",
+      "Si ves que la cola es larga, infórmalo al personal — pueden abrir más carriles.",
+    ],
+    warning: "Si tu vuelo sale en menos de 45 minutos, díselo al personal de seguridad. Pueden darte prioridad.",
+  },
+  {
+    id: 4,
+    title: "Coloca todo en las bandejas correctamente",
+    emoji: "📥",
+    accent: "var(--step-green)",
+    description: "El orden en que colocas las cosas en las bandejas determina si el escáner bloquea o no.",
+    details: [
+      "Bandeja 1: La mochila/maleta de cabina sola.",
+      "Bandeja 2: Ordenador portátil (plano, solo).",
+      "Bandeja 3: Bolsa de líquidos + chaqueta + cinturón + accesorios sueltos.",
+      "Nunca pongas el ordenador debajo de la mochila — el escáner no lo ve bien.",
+      "Los zapatos NO es obligatorio quitarlos en España (a diferencia de EE.UU.). Solo si el arco pita.",
+      "Si llevas prendas gruesas (abrigo), sácalas y ponlas en la bandeja.",
     ],
   },
   {
-    name: "Enterprise",
-    size: "50–100+ people",
-    basePrice: 30,
-    icon: <Crown className="size-5" />,
-    features: [
-      "Unlimited experiences, full day",
-      "Multiple concurrent game hosts",
-      "Full branded experience package",
-      "Executive summary + HR insights",
-      "Dedicated event coordinator",
-      "Annual partnership discount",
-      "Custom scenario development",
+    id: 5,
+    title: "Pasa por el arco o escáner de personas",
+    emoji: "🚶",
+    accent: "var(--step-red)",
+    description: "Sigue las instrucciones del personal. Si pita, no te asustes — es muy habitual y tiene solución fácil.",
+    details: [
+      "Vacía completamente los bolsillos antes de pasar.",
+      "Lleva el móvil en la bandeja, no en el bolsillo.",
+      "Algunos aeropuertos tienen escáner de cuerpo completo (en forma de cabina) — es seguro.",
+      "Si el arco pita: el agente usará un detector manual en tu cuerpo — es rutina.",
+      "Marcapasos u objetos metálicos médicos: informa al personal antes de pasar.",
+      "No intentes pasar apresuradamente ni antes de que te indiquen.",
+    ],
+    warning: "Si tu bandeja bloquea el escáner, un agente la revisará manualmente. No es nada grave, pero sí lleva más tiempo. Mejor preparar bien las bandejas.",
+  },
+  {
+    id: 6,
+    title: "Recoge todo al otro lado con calma",
+    emoji: "✅",
+    accent: "var(--step-purple)",
+    description: "El otro lado del control es la Zona Aire — ya estás dentro. Pero no te vayas sin comprobarlo todo.",
+    details: [
+      "Recoge TODAS tus bandejas — especialmente si tienes varias.",
+      "Comprueba que el ordenador está en la mochila antes de alejarte.",
+      "Revisa que llevas el móvil, documentación y billete.",
+      "Si necesitas recoger el cinturón o ponerte los zapatos, apártate de la zona de bandejas para no bloquear a otros.",
+      "¡Bienvenido a la Zona Aire! Ya puedes ir al duty free, restaurantes y tu gate.",
+      "Comprueba en las pantallas el número de puerta (gate) de tu vuelo.",
     ],
   },
 ];
 
-export function Pricing() {
-  const [teamSize, setTeamSize] = useState(25);
-  const [displayPrice, setDisplayPrice] = useState(0);
-  const animRef = useRef<number | null>(null);
-  const prevPrice = useRef(0);
+const LIQUIDS = [
+  { item: "Agua comprada ANTES del control", status: "danger", note: "La tirarán. Cómprala dentro." },
+  { item: "Agua comprada DENTRO del aeropuerto", status: "ok", note: "Puedes pasear con ella al avión." },
+  { item: "Medicamentos líquidos (con receta)", status: "warn", note: "Lleva la receta médica. Se puede pasar en más cantidad." },
+  { item: "Leche / comida para bebés", status: "ok", note: "Permitido en cantidad razonable. Pueden pedirte probarlo." },
+  { item: "Gel hidroalcohólico hasta 100ml", status: "ok", note: "Cuenta en la bolsa de 1L." },
+  { item: "Crema solar / hidratante hasta 100ml", status: "ok", note: "En la bolsa de 1L con el resto de líquidos." },
+  { item: "Perfume hasta 100ml", status: "ok", note: "En la bolsa de 1L." },
+  { item: "Perfume de 150ml (aunque sea nuevo)", status: "danger", note: "No puede pasar. Factúralo o cómpralo dentro." },
+  { item: "Pasta de dientes hasta 100ml", status: "ok", note: "Sí puede pasar (es gel/pasta = líquido)." },
+  { item: "Cuchilla de afeitar de hoja", status: "danger", note: "No permitida en cabina. Ve en facturado." },
+  { item: "Maquinilla eléctrica", status: "ok", note: "Permitida en cabina." },
+  { item: "Vino / alcohol comprado en tiendas Duty Free", status: "ok", note: "Solo si viene en bolsa sellada del aeropuerto." },
+];
 
-  const getTierForSize = useCallback((size: number) => {
-    if (size <= 24) return TIERS[0];
-    if (size <= 49) return TIERS[1];
-    return TIERS[2];
-  }, []);
+const ELECTRONICS = [
+  { item: "Ordenador portátil", status: "warn", note: "FUERA de la mochila en su propia bandeja." },
+  { item: "iPad / Tablet grande (+25cm)", status: "warn", note: "FUERA de la mochila en bandeja separada." },
+  { item: "iPad mini / Tablet pequeña", status: "ok", note: "Puede quedarse dentro del bolso." },
+  { item: "Móvil / Smartphone", status: "ok", note: "Dentro del bolso o en bandeja. Ambas opciones OK." },
+  { item: "Cámara DSLR / Mirrorless", status: "warn", note: "FUERA de la mochila en bandeja." },
+  { item: "Cámara compacta / GoPro", status: "ok", note: "Puede ir dentro de la mochila." },
+  { item: "Powerbank hasta 100Wh", status: "ok", note: "Solo en cabina (nunca en bodega). Debe ir en equipaje de mano." },
+  { item: "Powerbank entre 100-160Wh", status: "warn", note: "Necesita autorización de la aerolínea. Consulta antes." },
+  { item: "Powerbank +160Wh", status: "danger", note: "Prohibido completamente en aviones." },
+  { item: "Auriculares / Cascos", status: "ok", note: "Dentro de la mochila sin problema." },
+  { item: "Cables y cargadores", status: "ok", note: "Dentro de la mochila sin problema." },
+  { item: "Consola (Nintendo Switch, etc.)", status: "ok", note: "Dentro del bolso. No hace falta sacarla." },
+];
 
-  const calculatePrice = useCallback(
-    (size: number) => {
-      const tier = getTierForSize(size);
-      return tier.basePrice * size;
-    },
-    [getTierForSize]
-  );
+function StatusIcon({ status }: { status: string }) {
+  if (status === "ok") return <CheckCircle2 className="size-4 shrink-0 text-chart-5" />;
+  if (status === "danger") return <XCircle className="size-4 shrink-0 text-destructive" />;
+  return <AlertTriangle className="size-4 shrink-0 text-accent" />;
+}
 
-  // Animate price counter smoothly
-  useEffect(() => {
-    const targetPrice = calculatePrice(teamSize);
-    const startPrice = prevPrice.current;
-    const diff = targetPrice - startPrice;
-    const duration = 400;
-    const startTime = performance.now();
+function StatusBadge({ status }: { status: string }) {
+  const cls = status === "ok" ? "badge-ok" : status === "danger" ? "badge-danger" : "badge-warn";
+  const label = status === "ok" ? "✓ Permitido" : status === "danger" ? "✗ Prohibido" : "⚠ Condiciones";
+  return <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${cls}`}>{label}</span>;
+}
 
-    const animate = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplayPrice(Math.round(startPrice + diff * eased));
-      if (progress < 1) {
-        animRef.current = requestAnimationFrame(animate);
-      } else {
-        prevPrice.current = targetPrice;
-      }
-    };
+export function Security() {
+  const [activeStep, setActiveStep] = useState(0);
+  const [activeTab, setActiveTab] = useState<"liquids" | "electronics">("liquids");
 
-    if (animRef.current) cancelAnimationFrame(animRef.current);
-    animRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animRef.current) cancelAnimationFrame(animRef.current);
-    };
-  }, [teamSize, calculatePrice]);
-
-  const currentTier = getTierForSize(teamSize);
-
-  // Tick marks for the slider
-  const ticks = [10, 25, 50, 75, 100];
+  const step = STEPS[activeStep];
 
   return (
-    <section id="pricing" className="py-20 md:py-28 bg-muted/30">
+    <section id="seguridad" className="py-20 md:py-28 bg-muted/20 section-glow">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
-        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -125,177 +170,248 @@ export function Pricing() {
           transition={{ duration: 0.5 }}
           className="text-center mb-14"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">
-            <Building2 className="size-3.5" />
-            For Companies
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4 border border-primary/20">
+            <Shield className="size-3.5" />
+            Control de Seguridad
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4">
-            Transparent Pricing, Real ROI
+            Pasa el control sin estrés
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Per-person pricing that scales down as your team grows. Every package
-            includes a dedicated host, materials, and post-event analytics.
+            Guía paso a paso para ir desde la Zona Tierra a la Zona Aire con total tranquilidad.
+            Sigue estos 6 pasos y llegarás al gate relajado.
           </p>
         </motion.div>
 
-        {/* Interactive price calculator */}
+        {/* Stepper */}
+        <div className="grid lg:grid-cols-5 gap-8 mb-16">
+          {/* Step navigator — desktop */}
+          <div className="hidden lg:flex flex-col gap-2 lg:col-span-1">
+            {STEPS.map((s, i) => (
+              <button
+                key={s.id}
+                onClick={() => setActiveStep(i)}
+                className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all duration-200 cursor-pointer ${
+                  activeStep === i
+                    ? "bg-card border border-border shadow-sm"
+                    : "hover:bg-muted/50"
+                }`}
+              >
+                <div
+                  className="size-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-all"
+                  style={{
+                    backgroundColor: activeStep === i ? `color-mix(in oklch, ${s.accent} 20%, transparent)` : "transparent",
+                    color: activeStep === i ? s.accent : "var(--muted-foreground)",
+                    border: `2px solid ${activeStep === i ? s.accent : "var(--border)"}`,
+                  }}
+                >
+                  {activeStep > i ? "✓" : s.id}
+                </div>
+                <span className={`text-xs font-medium leading-tight ${activeStep === i ? "text-foreground" : "text-muted-foreground"}`}>
+                  {s.title}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* Step content */}
+          <div className="lg:col-span-4">
+            {/* Mobile step indicators */}
+            <div className="flex gap-1.5 mb-6 lg:hidden overflow-x-auto pb-2">
+              {STEPS.map((s, i) => (
+                <button
+                  key={s.id}
+                  onClick={() => setActiveStep(i)}
+                  className={`shrink-0 size-9 rounded-full text-xs font-bold transition-all cursor-pointer border-2 ${
+                    i === activeStep
+                      ? "text-white"
+                      : i < activeStep
+                      ? "border-chart-5 text-chart-5"
+                      : "border-border text-muted-foreground"
+                  }`}
+                  style={
+                    i === activeStep
+                      ? { backgroundColor: s.accent, borderColor: s.accent }
+                      : {}
+                  }
+                >
+                  {i < activeStep ? "✓" : s.id}
+                </button>
+              ))}
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm"
+              >
+                {/* Step header */}
+                <div
+                  className="p-6 md:p-8"
+                  style={{ borderBottom: `3px solid ${step.accent}` }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="size-14 rounded-2xl flex items-center justify-center text-3xl shrink-0"
+                      style={{ backgroundColor: `color-mix(in oklch, ${step.accent} 15%, transparent)` }}
+                    >
+                      {step.emoji}
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: step.accent }}>
+                        Paso {step.id} de {STEPS.length}
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">{step.title}</h3>
+                      <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step details */}
+                <div className="p-6 md:p-8">
+                  <ul className="space-y-3 mb-6">
+                    {step.details.map((d, i) => (
+                      <motion.li
+                        key={i}
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.06 }}
+                        className="flex items-start gap-3 text-sm text-muted-foreground"
+                      >
+                        <div
+                          className="size-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
+                          style={{
+                            backgroundColor: `color-mix(in oklch, ${step.accent} 15%, transparent)`,
+                            color: step.accent,
+                          }}
+                        >
+                          {i + 1}
+                        </div>
+                        {d}
+                      </motion.li>
+                    ))}
+                  </ul>
+
+                  {step.warning && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="flex items-start gap-3 p-4 rounded-xl badge-warn border text-sm mb-6"
+                    >
+                      <AlertTriangle className="size-4 shrink-0 mt-0.5" />
+                      <p>{step.warning}</p>
+                    </motion.div>
+                  )}
+
+                  {/* Navigation buttons */}
+                  <div className="flex items-center justify-between">
+                    <Button
+                      variant="outline"
+                      disabled={activeStep === 0}
+                      onClick={() => setActiveStep(Math.max(0, activeStep - 1))}
+                      className="gap-2"
+                    >
+                      <ChevronLeft className="size-4" />
+                      Anterior
+                    </Button>
+                    <span className="text-xs text-muted-foreground">
+                      {activeStep + 1} / {STEPS.length}
+                    </span>
+                    {activeStep < STEPS.length - 1 ? (
+                      <Button
+                        onClick={() => setActiveStep(Math.min(STEPS.length - 1, activeStep + 1))}
+                        className="gap-2"
+                      >
+                        Siguiente
+                        <ChevronRight className="size-4" />
+                      </Button>
+                    ) : (
+                      <Button onClick={() => setActiveStep(0)} variant="outline">
+                        ¡Repasa desde el inicio!
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Liquid & Electronics reference tables */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="max-w-2xl mx-auto mb-16"
+          transition={{ duration: 0.5 }}
         >
-          <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-muted-foreground">
-                Team Size
-              </span>
-              <span className="text-sm font-semibold text-foreground">
-                {teamSize} {teamSize === 1 ? "person" : "people"}
-              </span>
-            </div>
+          <h3 className="text-2xl font-bold text-foreground text-center mb-2">
+            Guía rápida: ¿Qué puedo llevar?
+          </h3>
+          <p className="text-muted-foreground text-center mb-8">
+            Consulta antes de hacer la maleta de mano.
+          </p>
 
-            {/* Slider */}
-            <div className="relative pt-2 pb-6">
-              <Slider
-                value={[teamSize]}
-                onValueChange={(v) => setTeamSize(v[0])}
-                min={10}
-                max={100}
-                step={1}
-                className="w-full"
-              />
-              {/* Tick marks */}
-              <div className="flex justify-between mt-2 px-0.5">
-                {ticks.map((tick) => (
-                  <button
-                    key={tick}
-                    onClick={() => setTeamSize(tick)}
-                    className={`text-xs font-medium transition-colors cursor-pointer ${
-                      teamSize === tick
-                        ? "text-primary"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {tick}+
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <Separator className="mb-6" />
-
-            {/* Price display */}
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">
-                  Estimated total for{" "}
-                  <span className="text-foreground font-medium">
-                    {currentTier.name}
-                  </span>{" "}
-                  package
-                </p>
-                <div className="flex items-baseline gap-1">
-                  <span className="price-display text-4xl font-bold text-foreground">
-                    ${displayPrice.toLocaleString()}
-                  </span>
-                  <span className="text-muted-foreground text-sm">
-                    ({currentTier.basePrice}/person)
-                  </span>
-                </div>
-              </div>
-              <Button
-                size="lg"
-                className="font-semibold"
-                onClick={() => {
-                  document
-                    .querySelector("#cta")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                }}
+          {/* Tab selector */}
+          <div className="flex justify-center gap-2 mb-6">
+            {[
+              { key: "liquids", label: "💧 Líquidos" },
+              { key: "electronics", label: "💻 Electrónica" },
+            ].map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key as typeof activeTab)}
+                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all cursor-pointer border ${
+                  activeTab === tab.key
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "border-border text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
               >
-                Get Quote
-                <ArrowRight className="size-4 ml-1.5" />
-              </Button>
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border bg-muted/30">
+                    <th className="text-left p-4 text-sm font-semibold text-foreground">Artículo</th>
+                    <th className="text-center p-4 text-sm font-semibold text-foreground w-32">Estado</th>
+                    <th className="text-left p-4 text-sm font-semibold text-foreground">Nota importante</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <AnimatePresence mode="wait">
+                    {(activeTab === "liquids" ? LIQUIDS : ELECTRONICS).map((row, i) => (
+                      <motion.tr
+                        key={`${activeTab}-${i}`}
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.04 }}
+                        className="border-b border-border/50 last:border-0 hover:bg-muted/20 transition-colors"
+                      >
+                        <td className="p-4 text-sm text-foreground font-medium flex items-center gap-2">
+                          <StatusIcon status={row.status} />
+                          {row.item}
+                        </td>
+                        <td className="p-4 text-center">
+                          <StatusBadge status={row.status} />
+                        </td>
+                        <td className="p-4 text-sm text-muted-foreground">{row.note}</td>
+                      </motion.tr>
+                    ))}
+                  </AnimatePresence>
+                </tbody>
+              </table>
             </div>
           </div>
         </motion.div>
-
-        {/* Tier cards */}
-        <div className="grid md:grid-cols-3 gap-6">
-          {TIERS.map((tier, i) => {
-            const isActive =
-              (i === 0 && teamSize <= 24) ||
-              (i === 1 && teamSize >= 25 && teamSize <= 49) ||
-              (i === 2 && teamSize >= 50);
-            return (
-              <motion.div
-                key={tier.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className={`relative rounded-xl border p-6 transition-all duration-300 ${
-                  tier.popular
-                    ? "border-primary shadow-md shadow-primary/10 dark:shadow-primary/20"
-                    : "border-border bg-card"
-                } ${isActive ? "ring-2 ring-primary/30" : ""}`}
-              >
-                {tier.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold">
-                    Most Popular
-                  </div>
-                )}
-
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex items-center justify-center size-10 rounded-lg bg-primary/10 text-primary">
-                    {tier.icon}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">
-                      {tier.name}
-                    </h3>
-                    <p className="text-xs text-muted-foreground">{tier.size}</p>
-                  </div>
-                </div>
-
-                <div className="mb-5">
-                  <span className="text-3xl font-bold text-foreground">
-                    ${tier.basePrice}
-                  </span>
-                  <span className="text-muted-foreground text-sm">/person</span>
-                </div>
-
-                <ul className="space-y-2.5 mb-6">
-                  {tier.features.map((feat) => (
-                    <li
-                      key={feat}
-                      className="flex items-start gap-2 text-sm text-muted-foreground"
-                    >
-                      <Check className="size-4 text-primary mt-0.5 shrink-0" />
-                      {feat}
-                    </li>
-                  ))}
-                </ul>
-
-                <Button
-                  variant={tier.popular ? "default" : "outline"}
-                  className="w-full font-semibold"
-                  onClick={() => {
-                    setTeamSize(
-                      i === 0 ? 15 : i === 1 ? 35 : 60
-                    );
-                    document
-                      .querySelector("#cta")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  {tier.popular ? "Get Started" : "Choose Plan"}
-                </Button>
-              </motion.div>
-            );
-          })}
-        </div>
       </div>
     </section>
   );

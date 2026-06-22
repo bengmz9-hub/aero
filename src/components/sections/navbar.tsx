@@ -1,16 +1,16 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sparkles, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, Sparkles, PlaneTakeoff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 
 const NAV_LINKS = [
-  { label: "Experiences", href: "#experiences" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Customization", href: "#customization" },
-  { label: "Case Studies", href: "#case-studies" },
+  { label: "Cómo Llegar", href: "#transporte" },
+  { label: "Seguridad", href: "#seguridad" },
+  { label: "En el Aeropuerto", href: "#navegacion" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 export function Navbar() {
@@ -31,17 +31,10 @@ export function Navbar() {
   };
 
   const toggleTheme = () => {
-    if (theme === "dark") {
-      setTheme("light");
-    } else if (theme === "light") {
-      setTheme("system");
-    } else {
-      setTheme("dark");
-    }
+    if (theme === "dark") setTheme("light");
+    else if (theme === "light") setTheme("system");
+    else setTheme("dark");
   };
-
-  const themeIcon = theme === "dark" ? Moon : theme === "light" ? Sun : Sparkles;
-  const themeLabel = theme === "dark" ? "Dark" : theme === "light" ? "Light" : "System";
 
   return (
     <motion.header
@@ -50,21 +43,24 @@ export function Navbar() {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-background/70 backdrop-blur-xl border-b border-border/60 shadow-[0_1px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_1px_30px_rgba(0,0,0,0.3)]"
+          ? "bg-background/75 backdrop-blur-xl border-b border-border/60 shadow-[0_1px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_1px_30px_rgba(0,0,0,0.4)]"
           : "bg-transparent"
       }`}
     >
       <nav className="mx-auto max-w-7xl flex items-center justify-between px-5 py-3 md:px-8">
+        {/* Logo */}
         <a
           href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="flex items-center gap-2 text-lg font-bold tracking-tight text-foreground"
+          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          className="flex items-center gap-2.5 text-lg font-bold tracking-tight text-foreground"
         >
-          <Sparkles className="size-5 text-primary" />
-          <span>EnigmaWorks</span>
+          <div className="flex items-center justify-center size-8 rounded-lg bg-primary text-primary-foreground">
+            <PlaneTakeoff className="size-4.5" />
+          </div>
+          <span>
+            <span className="text-primary">BCN</span>
+            <span className="text-muted-foreground font-normal"> · El Prat</span>
+          </span>
         </a>
 
         {/* Desktop links */}
@@ -80,12 +76,10 @@ export function Navbar() {
             </a>
           ))}
 
-          {/* Theme toggle */}
           <button
             onClick={toggleTheme}
             className="ml-2 flex items-center justify-center size-9 rounded-full border border-border bg-card/80 hover:bg-muted/50 transition-all duration-200 hover:scale-105 cursor-pointer"
-            aria-label={`Theme: ${themeLabel}. Click to switch.`}
-            title={themeLabel}
+            aria-label="Cambiar tema"
           >
             <motion.div
               key={theme}
@@ -106,40 +100,31 @@ export function Navbar() {
           <Button
             size="sm"
             className="ml-2 font-semibold"
-            onClick={() => {
-              document.querySelector("#cta")?.scrollIntoView({ behavior: "smooth" });
-            }}
+            onClick={() => window.open("https://www.aena.es/es/aeropuerto-barcelona.html", "_blank")}
           >
-            Request a Quote
+            Ver vuelos en AENA
           </Button>
         </div>
 
-        {/* Mobile: toggle + theme */}
+        {/* Mobile */}
         <div className="flex md:hidden items-center gap-2">
           <button
             onClick={toggleTheme}
-            className="flex items-center justify-center size-9 rounded-full border border-border bg-card/80 hover:bg-muted/50 transition-all duration-200 cursor-pointer"
-            aria-label={`Theme: ${themeLabel}`}
+            className="flex items-center justify-center size-9 rounded-full border border-border bg-card/80 hover:bg-muted/50 transition-all cursor-pointer"
+            aria-label="Cambiar tema"
           >
-            {theme === "dark" ? (
-              <Moon className="size-4 text-primary" />
-            ) : theme === "light" ? (
-              <Sun className="size-4 text-accent" />
-            ) : (
-              <Sparkles className="size-4 text-primary" />
-            )}
+            {theme === "dark" ? <Moon className="size-4 text-primary" /> : theme === "light" ? <Sun className="size-4 text-accent" /> : <Sparkles className="size-4 text-primary" />}
           </button>
           <button
             className="p-2 rounded-md hover:bg-muted/50 transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+            aria-label="Menú"
           >
             {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -163,12 +148,9 @@ export function Navbar() {
               <Button
                 size="sm"
                 className="mt-2 font-semibold"
-                onClick={() => {
-                  setMobileOpen(false);
-                  document.querySelector("#cta")?.scrollIntoView({ behavior: "smooth" });
-                }}
+                onClick={() => window.open("https://www.aena.es/es/aeropuerto-barcelona.html", "_blank")}
               >
-                Request a Quote
+                Ver vuelos en AENA
               </Button>
             </div>
           </motion.div>

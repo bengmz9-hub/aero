@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -15,24 +15,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EnigmaWorks — Corporate Team-Building Experiences",
+  title: "Guía del Aeropuerto de Barcelona El Prat (BCN) — Todo lo que necesitas saber",
   description:
-    "Murder-mystery and escape-room experiences designed for corporate teams. Boost collaboration, leadership, and creativity through immersive game-night events.",
+    "Guía completa para pasajeros del Aeropuerto de Barcelona El Prat: cómo llegar, transporte, control de seguridad, líquidos en el equipaje de mano, navigación por terminales T1 y T2 y preguntas frecuentes.",
   keywords: [
-    "team building",
-    "murder mystery",
-    "escape room",
-    "corporate events",
-    "team collaboration",
+    "aeropuerto barcelona el prat",
+    "BCN aeropuerto",
+    "como llegar aeropuerto barcelona",
+    "control seguridad aeropuerto",
+    "liquidos avion reglas",
+    "metro L9 aeropuerto",
+    "aerobus barcelona",
+    "terminal 1 terminal 2 barcelona",
   ],
-  icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
-  },
   openGraph: {
-    title: "EnigmaWorks — Corporate Team-Building Experiences",
+    title: "Guía del Aeropuerto de Barcelona El Prat (BCN)",
     description:
-      "Murder-mystery and escape-room experiences designed for corporate teams.",
+      "Todo lo que necesitas para volar desde Barcelona sin estrés: transporte, seguridad, terminales y consejos prácticos.",
     type: "website",
+    locale: "es_ES",
   },
 };
 
@@ -42,7 +43,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >

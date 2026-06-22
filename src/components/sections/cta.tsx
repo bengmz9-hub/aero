@@ -1,257 +1,273 @@
-"use client";
+﻿"use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Send,
-  CheckCircle2,
-  Sparkles,
-  ArrowRight,
+  ExternalLink,
+  PlaneTakeoff,
+  Globe,
+  Luggage,
+  Accessibility,
+  Bus,
+  Phone,
+  Clock,
+  AlertCircle,
+  ShieldCheck,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-export function CTASection() {
-  const [submitted, setSubmitted] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [company, setCompany] = useState("");
-  const [teamSize, setTeamSize] = useState("");
-  const [message, setMessage] = useState("");
+interface LinkCard {
+  id: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  url: string;
+  accent: string;
+  badge?: string;
+}
 
-  const canSubmit = name.trim() && email.trim() && company.trim() && teamSize;
+const LINK_CARDS: LinkCard[] = [
+  {
+    id: "aena-vuelos",
+    icon: <PlaneTakeoff className="size-5" />,
+    title: "Estado de Vuelos en Tiempo Real",
+    description: "Consulta salidas, llegadas, retrasos y cancelaciones de tu vuelo en la web oficial de AENA.",
+    url: "https://www.aena.es/es/aeropuerto-barcelona/vuelos.html",
+    accent: "var(--transport-aerobus)",
+    badge: "Tiempo real",
+  },
+  {
+    id: "aena-web",
+    icon: <Globe className="size-5" />,
+    title: "Web Oficial del Aeropuerto",
+    description: "Planos, servicios, información de terminales, parking y todo sobre el Aeropuerto El Prat de Barcelona.",
+    url: "https://www.aena.es/es/aeropuerto-barcelona.html",
+    accent: "var(--zone-aire)",
+  },
+  {
+    id: "lost-found",
+    icon: <Luggage className="size-5" />,
+    title: "Objetos Perdidos (Lost & Found)",
+    description: "¿Has perdido algo en el aeropuerto o tu maleta no llegó? Reclama aquí en la web de AENA.",
+    url: "https://www.aena.es/es/aeropuerto-barcelona/objetos-perdidos.html",
+    accent: "var(--transport-taxi)",
+  },
+  {
+    id: "pmr",
+    icon: <Accessibility className="size-5" />,
+    title: "Asistencia para Personas con Movilidad Reducida",
+    description: "Información y formulario para solicitar asistencia PMR en el aeropuerto de Barcelona.",
+    url: "https://www.aena.es/es/pasajeros/asistencia-personas-discapacidad.html",
+    accent: "var(--step-green)",
+  },
+  {
+    id: "aerobus",
+    icon: <Bus className="size-5" />,
+    title: "Aerobús — Compra de Billetes",
+    description: "Compra con antelación el billete del Aerobús Barcelona–El Prat y obtén descuento.",
+    url: "https://www.aerobusbcn.com/es/",
+    accent: "var(--transport-metro)",
+    badge: "Descuento online",
+  },
+  {
+    id: "aena-parking",
+    icon: <Globe className="size-5" />,
+    title: "Reserva de Parking AENA",
+    description: "Reserva tu plaza de aparcamiento online y ahorra hasta un 30% frente al precio en taquilla.",
+    url: "https://www.aena.es/es/aeropuerto-barcelona/aparcamientos.html",
+    accent: "var(--transport-car)",
+    badge: "Ahorra 30%",
+  },
+];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!canSubmit) return;
-    setSubmitted(true);
-  };
+const QUICK_INFO = [
+  {
+    icon: <Clock className="size-4" />,
+    label: "Horario del Aeropuerto",
+    value: "Abierto 24 horas, 365 días al año",
+  },
+  {
+    icon: <Phone className="size-4" />,
+    label: "Teléfono AENA (BCN)",
+    value: "+34 913 211 000",
+  },
+  {
+    icon: <AlertCircle className="size-4" />,
+    label: "Tiempo mínimo antes de salida",
+    value: "90 min Schengen · 2h Internacional",
+  },
+  {
+    icon: <ShieldCheck className="size-4" />,
+    label: "Código IATA",
+    value: "BCN · Código ICAO: LEBL",
+  },
+];
 
-  const handleReset = () => {
-    setSubmitted(false);
-    setName("");
-    setEmail("");
-    setCompany("");
-    setTeamSize("");
-    setMessage("");
-  };
-
+export function UsefulLinks() {
   return (
-    <section id="cta" className="py-20 md:py-28">
+    <section id="links" className="py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="relative rounded-2xl border border-border dark:border-border/50 bg-card overflow-hidden shadow-xl dark:shadow-2xl dark:shadow-primary/5"
+          className="text-center mb-14"
         >
-          {/* Background accent */}
-          <div className="absolute inset-0 -z-0">
-            <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-primary/5 dark:bg-primary/[0.03] blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-accent/5 dark:bg-accent/[0.03] blur-3xl" />
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4 border border-primary/20">
+            <Globe className="size-3.5" />
+            Recursos Útiles
           </div>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4">
+            Todo lo que necesitas, a un clic
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Links directos a las webs oficiales más útiles para tu viaje desde y hacia El Prat.
+          </p>
+        </motion.div>
 
-          <div className="relative z-10 p-8 md:p-12 lg:p-16">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left: Copy */}
+        {/* Quick info strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12"
+        >
+          {QUICK_INFO.map((info, i) => (
+            <div
+              key={i}
+              className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card"
+            >
+              <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                {info.icon}
+              </div>
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-5">
-                  <Sparkles className="size-3.5" />
-                  Get Started
-                </div>
-                <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4">
-                  Ready to Transform Your Next Team Event?
-                </h2>
-                <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                  Tell us about your team and we&apos;ll craft a tailored
-                  proposal within 24 hours. No commitment, no pressure — just a
-                  conversation about what&apos;s possible.
-                </p>
-                <div className="flex flex-col gap-3 text-sm text-muted-foreground">
-                  {[
-                    "Free consultation with an event strategist",
-                    "Custom scenario proposal within 24 hours",
-                    "Flexible scheduling and group sizes",
-                  ].map((item) => (
-                    <div key={item} className="flex items-center gap-2">
-                      <CheckCircle2 className="size-4 text-primary shrink-0" />
-                      {item}
-                    </div>
-                  ))}
-                </div>
+                <p className="text-xs text-muted-foreground mb-0.5">{info.label}</p>
+                <p className="text-sm font-semibold text-foreground">{info.value}</p>
               </div>
+            </div>
+          ))}
+        </motion.div>
 
-              {/* Right: Form / Confirmation */}
-              <div className="relative min-h-[380px]">
-                <AnimatePresence mode="wait">
-                  {!submitted ? (
-                    <motion.form
-                      key="form"
-                      initial={{ opacity: 0, x: 30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -60 }}
-                      transition={{ duration: 0.4, ease: "easeInOut" }}
-                      onSubmit={handleSubmit}
-                      className="space-y-4"
-                    >
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="cta-name">Full Name</Label>
-                          <Input
-                            id="cta-name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Jane Smith"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="cta-email">Work Email</Label>
-                          <Input
-                            id="cta-email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="jane@company.com"
-                          />
-                        </div>
-                      </div>
+        {/* Link cards grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {LINK_CARDS.map((card, i) => (
+            <motion.a
+              key={card.id}
+              href={card.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              whileHover={{ y: -4 }}
+              className="group relative rounded-xl border border-border bg-card overflow-hidden hover:shadow-xl hover:shadow-primary/5 dark:hover:shadow-primary/10 hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 cursor-pointer block"
+            >
+              {/* Accent top bar */}
+              <div className="h-1" style={{ backgroundColor: card.accent }} />
 
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="cta-company">Company</Label>
-                          <Input
-                            id="cta-company"
-                            value={company}
-                            onChange={(e) => setCompany(e.target.value)}
-                            placeholder="Acme Corp"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Team Size</Label>
-                          <Select value={teamSize} onValueChange={setTeamSize}>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="10-24">10–24 people</SelectItem>
-                              <SelectItem value="25-49">25–49 people</SelectItem>
-                              <SelectItem value="50-99">50–99 people</SelectItem>
-                              <SelectItem value="100+">100+ people</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="cta-message">
-                          Anything else?{" "}
-                          <span className="text-muted-foreground font-normal">
-                            (optional)
-                          </span>
-                        </Label>
-                        <Textarea
-                          id="cta-message"
-                          value={message}
-                          onChange={(e) => setMessage(e.target.value)}
-                          placeholder="Tell us about your goals, preferred dates, or any special requirements..."
-                          rows={3}
-                          className="resize-none"
-                        />
-                      </div>
-
-                      <Button
-                        type="submit"
-                        size="lg"
-                        disabled={!canSubmit}
-                        className="w-full font-semibold text-base"
-                      >
-                        <Send className="size-4 mr-2" />
-                        Request a Quote
-                      </Button>
-                    </motion.form>
-                  ) : (
-                    <motion.div
-                      key="confirmation"
-                      initial={{ opacity: 0, x: 80, scale: 0.95 }}
-                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                      transition={{
-                        duration: 0.5,
-                        ease: [0.16, 1, 0.3, 1],
-                      }}
-                      className="absolute inset-0 flex flex-col items-center justify-center text-center p-6"
-                    >
-                      <motion.div
-                        initial={{ scale: 0, rotate: -180 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 200,
-                          damping: 15,
-                          delay: 0.15,
+              <div className="p-5">
+                <div className="flex items-start justify-between mb-3">
+                  <div
+                    className="size-11 rounded-xl flex items-center justify-center"
+                    style={{
+                      backgroundColor: `color-mix(in oklch, ${card.accent} 14%, transparent)`,
+                      color: card.accent,
+                    }}
+                  >
+                    {card.icon}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {card.badge && (
+                      <span
+                        className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                        style={{
+                          backgroundColor: `color-mix(in oklch, ${card.accent} 15%, transparent)`,
+                          color: card.accent,
                         }}
-                        className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6"
                       >
-                        <CheckCircle2 className="size-10 text-primary" />
-                      </motion.div>
+                        {card.badge}
+                      </span>
+                    )}
+                    <ExternalLink
+                      className="size-4 text-muted-foreground group-hover:text-primary transition-colors"
+                    />
+                  </div>
+                </div>
 
-                      <motion.h3
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="text-2xl font-bold text-foreground mb-2"
-                      >
-                        Quote Request Received!
-                      </motion.h3>
-                      <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4 }}
-                        className="text-muted-foreground mb-8 max-w-sm"
-                      >
-                        Thanks, {name.split(" ")[0]}! Our event strategist will
-                        reach out to <strong className="text-foreground">{email}</strong>{" "}
-                        within 24 hours with a custom proposal for {company}.
-                      </motion.p>
-
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
-                        className="flex flex-col sm:flex-row gap-3"
-                      >
-                        <Button
-                          variant="outline"
-                          onClick={handleReset}
-                          className="font-semibold"
-                        >
-                          Submit Another Request
-                        </Button>
-                        <Button
-                          className="font-semibold"
-                          onClick={() => {
-                            document
-                              .querySelector("#experiences")
-                              ?.scrollIntoView({ behavior: "smooth" });
-                          }}
-                        >
-                          Browse Experiences
-                          <ArrowRight className="size-4 ml-1.5" />
-                        </Button>
-                      </motion.div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">
+                  {card.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {card.description}
+                </p>
               </div>
+            </motion.a>
+          ))}
+        </div>
+
+        {/* Disclaimer */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-12 p-5 rounded-xl border border-border bg-muted/20 text-center"
+        >
+          <p className="text-sm text-muted-foreground">
+            <span className="font-semibold text-foreground">⚠️ Información orientativa.</span>{" "}
+            Las normas de seguridad, horarios y precios pueden cambiar. Siempre consulta{" "}
+            <a
+              href="https://www.aena.es"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline underline-offset-2 hover:no-underline"
+            >
+              la web oficial de AENA
+            </a>{" "}
+            y la web de tu aerolínea para información actualizada antes de volar.
+          </p>
+        </motion.div>
+
+        {/* Big CTA */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-10 relative rounded-2xl border border-border bg-card overflow-hidden shadow-xl p-8 md:p-12 text-center"
+        >
+          <div className="absolute inset-0 -z-0">
+            <div className="absolute top-0 left-1/4 w-80 h-80 rounded-full bg-primary/5 dark:bg-primary/[0.04] blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-60 h-60 rounded-full bg-accent/5 dark:bg-accent/[0.03] blur-3xl" />
+          </div>
+          <div className="relative z-10">
+            <div className="text-4xl mb-4">✈️</div>
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+              ¡Buen viaje desde Barcelona!
+            </h3>
+            <p className="text-muted-foreground max-w-xl mx-auto mb-6">
+              Con esta guía estás listo para llegar al aeropuerto, pasar el control sin estrés
+              y disfrutar de tu vuelo. Comparte esta guía con alguien que la necesite.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Button
+                size="lg"
+                className="font-semibold"
+                onClick={() => window.open("https://www.aena.es/es/aeropuerto-barcelona/vuelos.html", "_blank")}
+              >
+                <PlaneTakeoff className="size-4 mr-2" />
+                Ver mi vuelo en AENA
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="font-semibold"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              >
+                Volver al inicio
+              </Button>
             </div>
           </div>
         </motion.div>
