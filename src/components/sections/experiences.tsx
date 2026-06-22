@@ -251,7 +251,7 @@ export function Transport() {
                 {/* Left: Info, Price, Duration, Tip */}
                 <div className="flex flex-col justify-between gap-6">
                   <div>
-                    <div className="flex items-start gap-4 mb-4">
+                    <div className="flex items-start gap-4 mb-5">
                       <div
                         className="size-14 rounded-2xl flex items-center justify-center shrink-0"
                         style={{
@@ -262,26 +262,26 @@ export function Transport() {
                         {activeTransport.icon}
                       </div>
                       <div>
-                        <div className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: activeTransport.accent }}>
+                        <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: activeTransport.accent }}>
                           {activeTransport.terminal} · Frecuencia: {activeTransport.freq}
                         </div>
-                        <h3 className="text-2xl font-extrabold text-white leading-tight">{activeTransport.name}</h3>
+                        <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">{activeTransport.name}</h3>
                       </div>
                     </div>
                     
                     {/* Specs Grid */}
-                    <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-zinc-950/20 border border-white/5 mb-4">
+                    <div className="grid grid-cols-2 gap-4 p-5 rounded-xl bg-zinc-950/20 border border-white/5 mb-5">
                       <div>
-                        <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider block mb-1">Duración</span>
-                        <span className="text-sm font-semibold text-white flex items-center gap-1.5">
-                          <Clock className="size-4 text-primary shrink-0" />
+                        <span className="text-[11px] font-bold text-white/40 uppercase tracking-wider block mb-1">Duración</span>
+                        <span className="text-base sm:text-lg font-bold text-white flex items-center gap-1.5">
+                          <Clock className="size-4.5 text-primary shrink-0" />
                           {activeTransport.duration}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider block mb-1">Precio aproximado</span>
-                        <span className="text-sm font-semibold text-white flex items-center gap-1.5">
-                          <Euro className="size-4 text-primary shrink-0" />
+                        <span className="text-[11px] font-bold text-white/40 uppercase tracking-wider block mb-1">Precio aproximado</span>
+                        <span className="text-base sm:text-lg font-bold text-white flex items-center gap-1.5">
+                          <Euro className="size-4.5 text-primary shrink-0" />
                           {activeTransport.price}
                         </span>
                       </div>
@@ -289,17 +289,17 @@ export function Transport() {
                   </div>
                   
                   <div
-                    className="rounded-xl p-4 text-xs text-white/70 border leading-relaxed bg-zinc-950/20"
+                    className="rounded-xl p-5 text-sm text-white/70 border leading-relaxed bg-zinc-950/20"
                     style={{
                       borderColor: `color-mix(in oklch, ${activeTransport.accent} 15%, transparent)`,
                     }}
                   >
-                    <span className="font-bold text-white block mb-1" style={{ color: activeTransport.accent }}>💡 Consejo Práctico:</span>
+                    <span className="font-bold text-white text-sm block mb-1" style={{ color: activeTransport.accent }}>💡 Consejo Práctico:</span>
                     {activeTransport.tip}
                   </div>
 
                   {/* Category badges */}
-                  <div className="flex flex-wrap gap-2 pt-3 border-t border-white/5">
+                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
                     {activeTransport.tags.map((tag) => {
                       const f = FILTERS.find((fi) => fi.key === tag);
                       if (!f) return null;
@@ -307,9 +307,9 @@ export function Transport() {
                       return (
                         <span
                           key={tag}
-                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[9px] font-bold tracking-wider uppercase border bg-white/5 text-white/40 border-white/5"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold tracking-wider uppercase border bg-white/5 text-white/50 border-white/5"
                         >
-                          <TagIcon className="size-3 shrink-0" />
+                          <TagIcon className="size-3.5 shrink-0" />
                           {f.label}
                         </span>
                       );
@@ -319,32 +319,32 @@ export function Transport() {
 
                 {/* Right: Pros and Cons */}
                 <div className="flex flex-col gap-6">
-                  {/* Pros */}
-                  <div>
-                    <p className="text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                  {/* Pros Card */}
+                  <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-5 md:p-6 flex flex-col gap-3.5">
+                    <h4 className="text-sm font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-emerald-400 shrink-0" />
                       Ventajas del servicio
-                    </p>
-                    <ul className="space-y-2.5">
+                    </h4>
+                    <ul className="space-y-3">
                       {activeTransport.pros.map((p) => (
-                        <li key={p} className="text-xs text-white/60 flex items-start gap-2 leading-relaxed">
-                          <span className="text-emerald-400 shrink-0 mt-0.5">✓</span>
+                        <li key={p} className="text-sm text-white/70 flex items-start gap-2.5 leading-relaxed">
+                          <span className="text-emerald-400 shrink-0 font-bold mt-0.5">✓</span>
                           {p}
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  {/* Cons */}
-                  <div>
-                    <p className="text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                  {/* Cons Card */}
+                  <div className="bg-red-500/5 border border-red-500/10 rounded-xl p-5 md:p-6 flex flex-col gap-3.5">
+                    <h4 className="text-sm font-bold text-red-400 uppercase tracking-wider flex items-center gap-2">
                       <XCircle className="size-4 text-red-400 shrink-0" />
                       Puntos en contra
-                    </p>
-                    <ul className="space-y-2.5">
+                    </h4>
+                    <ul className="space-y-3">
                       {activeTransport.cons.map((c) => (
-                        <li key={c} className="text-xs text-white/50 flex items-start gap-2 leading-relaxed">
-                          <span className="text-red-400/80 shrink-0 mt-0.5">✗</span>
+                        <li key={c} className="text-sm text-white/60 flex items-start gap-2.5 leading-relaxed">
+                          <span className="text-red-400/80 shrink-0 font-bold mt-0.5">✗</span>
                           {c}
                         </li>
                       ))}
