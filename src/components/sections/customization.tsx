@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,6 +46,11 @@ export function Customization() {
   const [brandColor, setBrandColor] = useState(BRAND_COLORS[0].value);
   const [isBuilding, setIsBuilding] = useState(false);
   const [dossierReady, setDossierReady] = useState(false);
+  const [dossierId, setDossierId] = useState("--------");
+
+  useEffect(() => {
+    setDossierId(Date.now().toString(36).toUpperCase().slice(-6));
+  }, []);
 
   const handleBuildDossier = () => {
     if (!companyName.trim()) return;
@@ -252,7 +257,7 @@ export function Customization() {
                       </span>
                     </div>
                     <span className="text-xs font-mono text-muted-foreground">
-                      DOSSIER-{Date.now().toString(36).toUpperCase().slice(-6)}
+                      DOSSIER-{dossierId}
                     </span>
                   </div>
 
