@@ -149,7 +149,7 @@ function StatusIcon({ status }: { status: string }) {
 function StatusBadge({ status }: { status: string }) {
   const cls = status === "ok" ? "badge-ok" : status === "danger" ? "badge-danger" : "badge-warn";
   const label = status === "ok" ? "✓ Permitido" : status === "danger" ? "✗ Prohibido" : "⚠ Condiciones";
-  return <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${cls}`}>{label}</span>;
+  return <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap inline-block ${cls}`}>{label}</span>;
 }
 
 export function Security() {
