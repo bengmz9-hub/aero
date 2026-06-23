@@ -340,42 +340,6 @@ export function Hero() {
               </div>
             </div>
           </div>
-
-          {/* Decorative Floating Element 1 - Weather */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="absolute -right-8 top-[40%] bg-zinc-900/80 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl z-20 hidden lg:block"
-            style={{ transform: `translate(${tilt.y * -5}px, ${tilt.x * -5}px)` }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="size-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400">
-                <Sparkles className="size-5" />
-              </div>
-              <div>
-                <p className="text-xs text-white/50 font-semibold uppercase tracking-wider">Barcelona</p>
-                <p className="text-lg font-bold text-white">24°C <span className="text-white/40 text-sm font-normal">Soleado</span></p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Decorative Floating Element 2 - Quick Action */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="absolute -left-12 bottom-12 bg-zinc-900/80 backdrop-blur-xl border border-white/10 p-3 rounded-2xl shadow-2xl z-20 hidden lg:flex items-center gap-3 pr-5"
-            style={{ transform: `translate(${tilt.y * 5}px, ${tilt.x * 5}px)` }}
-          >
-            <div className="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-              <Plane className="size-4 -rotate-45" />
-            </div>
-            <div>
-              <p className="text-xs font-bold text-white leading-tight">Fast Track</p>
-              <p className="text-[10px] text-white/50">Disponible ahora</p>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
 
