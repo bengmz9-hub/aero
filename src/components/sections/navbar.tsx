@@ -1,39 +1,23 @@
-﻿"use client";
+"use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon, Sparkles, PlaneTakeoff } from "lucide-react";
+import { useState } from "react";
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import { Plane, Menu, X, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "@/components/theme-provider";
-
-const NAV_LINKS = [
-  { label: "Cómo Llegar", href: "#transporte" },
-  { label: "Seguridad", href: "#seguridad" },
-  { label: "En el Aeropuerto", href: "#navegacion" },
-  { label: "FAQ", href: "#faq" },
-];
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { t, language, setLanguage } = useLanguage();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrolled(latest > 50);
+  });
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    setMobileOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const toggleTheme = () => {
-    if (theme === "dark") setTheme("light");
-    else if (theme === "light") setTheme("system");
-    else setTheme("dark");
+  const toggleLanguage = () => {
+    setLanguage(language === 'es' ? 'en' : 'es');
   };
 
   return (
@@ -42,7 +26,7 @@ export function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
+        isScrolled
           ? "bg-background/75 backdrop-blur-xl border-b border-border/60 shadow-[0_1px_30px_rgba(0,0,0,0.10)] dark:shadow-[0_1px_30px_rgba(0,0,0,0.4)]"
           : "bg-transparent"
       }`}
@@ -55,7 +39,7 @@ export function Navbar() {
           className="flex items-center gap-2.5 text-lg font-bold tracking-tight text-foreground"
         >
           <div className="flex items-center justify-center size-8 rounded-lg bg-primary text-primary-foreground">
-            <PlaneTakeoff className="size-4.5" />
+            <Plane className="size-4.5" />
           </div>
           <span>
             <span className="text-primary">BCN</span>
@@ -64,69 +48,44 @@ export function Navbar() {
         </a>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map((link) => (
+        <div className="hidden md:flex items-center gap-8">
+          {t.navbar.links.map((link, i) => (
             <a
-              key={link.href}
+              key={i}
               href={link.href}
-              onClick={(e) => handleClick(e, link.href)}
-              className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 rounded-md hover:bg-muted/50"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               {link.label}
             </a>
           ))}
-
-          <button
-            onClick={toggleTheme}
-            className="ml-2 flex items-center justify-center size-9 rounded-full border border-border bg-card/80 hover:bg-muted/50 transition-all duration-200 hover:scale-105 cursor-pointer"
-            aria-label="Cambiar tema"
+          <button 
+            onClick={toggleLanguage}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors ml-2 bg-muted/50 px-3 py-1.5 rounded-full border border-border"
           >
-            <motion.div
-              key={theme}
-              initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-              animate={{ rotate: 0, opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 200, damping: 15 }}
-            >
-              {theme === "dark" ? (
-                <Moon className="size-4 text-primary" />
-              ) : theme === "light" ? (
-                <Sun className="size-4 text-accent" />
-              ) : (
-                <Sparkles className="size-4 text-primary" />
-              )}
-            </motion.div>
+            <Globe className="size-4" />
+            {language === 'es' ? 'EN' : 'ES'}
           </button>
-
-          <Button
-            size="sm"
-            className="ml-2 font-semibold"
-            onClick={() => window.open("https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html", "_blank")}
-          >
-            Ver vuelos en AENA
-          </Button>
         </div>
 
-        {/* Mobile */}
-        <div className="flex md:hidden items-center gap-2">
-          <button
-            onClick={toggleTheme}
-            className="flex items-center justify-center size-9 rounded-full border border-border bg-card/80 hover:bg-muted/50 transition-all cursor-pointer"
-            aria-label="Cambiar tema"
+        {/* Mobile Menu Button & Lang Toggle */}
+        <div className="flex items-center gap-3 md:hidden">
+          <button 
+            onClick={toggleLanguage}
+            className="flex items-center justify-center text-muted-foreground hover:text-foreground bg-muted/50 p-2 rounded-full border border-border"
           >
-            {theme === "dark" ? <Moon className="size-4 text-primary" /> : theme === "light" ? <Sun className="size-4 text-accent" /> : <Sparkles className="size-4 text-primary" />}
+            <span className="text-xs font-bold">{language === 'es' ? 'EN' : 'ES'}</span>
           </button>
           <button
-            className="p-2 rounded-md hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Menú"
+            className="p-2 text-foreground"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            {mobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
           </button>
         </div>
       </nav>
 
       <AnimatePresence>
-        {mobileOpen && (
+        {mobileMenuOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
@@ -134,13 +93,13 @@ export function Navbar() {
             transition={{ duration: 0.25 }}
             className="md:hidden overflow-hidden bg-background/95 backdrop-blur-xl border-b border-border"
           >
-            <div className="flex flex-col gap-1 px-5 py-4">
-              {NAV_LINKS.map((link) => (
+            <div className="flex flex-col gap-6 p-8">
+              {t.navbar.links.map((link, i) => (
                 <a
-                  key={link.href}
+                  key={i}
                   href={link.href}
-                  onClick={(e) => handleClick(e, link.href)}
-                  className="px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-2xl font-semibold text-foreground transition-colors"
                 >
                   {link.label}
                 </a>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, AlertTriangle, XCircle, ChevronRight, ChevronLeft, Shield, LucideIcon, Droplet, Briefcase, Clock, Inbox, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface Step {
   id: number;
@@ -110,35 +111,7 @@ const STEPS: Step[] = [
   },
 ];
 
-const LIQUIDS = [
-  { item: "Agua comprada ANTES del control", status: "danger", note: "La tirarán. Cómprala dentro." },
-  { item: "Agua comprada DENTRO del aeropuerto", status: "ok", note: "Puedes pasear con ella al avión." },
-  { item: "Medicamentos líquidos (con receta)", status: "warn", note: "Lleva la receta médica. Se puede pasar en más cantidad." },
-  { item: "Leche / comida para bebés", status: "ok", note: "Permitido en cantidad razonable. Pueden pedirte probarlo." },
-  { item: "Gel hidroalcohólico hasta 100ml", status: "ok", note: "Cuenta en la bolsa de 1L." },
-  { item: "Crema solar / hidratante hasta 100ml", status: "ok", note: "En la bolsa de 1L con el resto de líquidos." },
-  { item: "Perfume hasta 100ml", status: "ok", note: "En la bolsa de 1L." },
-  { item: "Perfume de 150ml (aunque sea nuevo)", status: "danger", note: "No puede pasar. Factúralo o cómpralo dentro." },
-  { item: "Pasta de dientes hasta 100ml", status: "ok", note: "Sí puede pasar (es gel/pasta = líquido)." },
-  { item: "Cuchilla de afeitar de hoja", status: "danger", note: "No permitida en cabina. Ve en facturado." },
-  { item: "Maquinilla eléctrica", status: "ok", note: "Permitida en cabina." },
-  { item: "Vino / alcohol comprado en tiendas Duty Free", status: "ok", note: "Solo si viene en bolsa sellada del aeropuerto." },
-];
 
-const ELECTRONICS = [
-  { item: "Ordenador portátil", status: "warn", note: "FUERA de la mochila en su propia bandeja." },
-  { item: "iPad / Tablet grande (+25cm)", status: "warn", note: "FUERA de la mochila en bandeja separada." },
-  { item: "iPad mini / Tablet pequeña", status: "ok", note: "Puede quedarse dentro del bolso." },
-  { item: "Móvil / Smartphone", status: "ok", note: "Dentro del bolso o en bandeja. Ambas opciones OK." },
-  { item: "Cámara DSLR / Mirrorless", status: "warn", note: "FUERA de la mochila en bandeja." },
-  { item: "Cámara compacta / GoPro", status: "ok", note: "Puede ir dentro de la mochila." },
-  { item: "Powerbank hasta 100Wh", status: "ok", note: "Solo en cabina (nunca en bodega). Debe ir en equipaje de mano." },
-  { item: "Powerbank entre 100-160Wh", status: "warn", note: "Necesita autorización de la aerolínea. Consulta antes." },
-  { item: "Powerbank +160Wh", status: "danger", note: "Prohibido completamente en aviones." },
-  { item: "Auriculares / Cascos", status: "ok", note: "Dentro de la mochila sin problema." },
-  { item: "Cables y cargadores", status: "ok", note: "Dentro de la mochila sin problema." },
-  { item: "Consola (Nintendo Switch, etc.)", status: "ok", note: "Dentro del bolso. No hace falta sacarla." },
-];
 
 function StatusIcon({ status }: { status: string }) {
   if (status === "ok") return <CheckCircle2 className="size-4 shrink-0 text-chart-5" />;
@@ -147,16 +120,19 @@ function StatusIcon({ status }: { status: string }) {
 }
 
 function StatusBadge({ status }: { status: string }) {
+  const { t } = useLanguage();
   const cls = status === "ok" ? "badge-ok" : status === "danger" ? "badge-danger" : "badge-warn";
-  const label = status === "ok" ? "✓ Permitido" : status === "danger" ? "✗ Prohibido" : "⚠ Condiciones";
+  const label = status === "ok" ? t.security.badges.ok : status === "danger" ? t.security.badges.danger : t.security.badges.warn;
   return <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap inline-block ${cls}`}>{label}</span>;
 }
 
 export function Security() {
+  const { t } = useLanguage();
   const [activeStep, setActiveStep] = useState(0);
   const [activeTab, setActiveTab] = useState<"liquids" | "electronics">("liquids");
 
-  const step = STEPS[activeStep];
+  const step = t.security.steps[activeStep];
+  const stepMeta = STEPS[activeStep];
 
   return (
     <section id="seguridad" className="py-10 md:py-12 bg-muted/20 section-glow border-t border-white/5">
@@ -170,14 +146,13 @@ export function Security() {
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase mb-4 border border-white/10">
             <Shield className="size-3.5" />
-            Seguridad
+            {t.security.tagLocation}
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-100 mb-4">
-            Pasa el control <span className="runway-shimmer-text">sin estrés</span>
+            {t.security.title} <span className="runway-shimmer-text">{t.security.titleHighlight}</span>
           </h2>
           <p className="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Guía paso a paso para ir desde la Zona Tierra a la Zona Aire con total tranquilidad.
-            Sigue estos 6 pasos y llegarás a tu puerta de embarque relajado.
+            {t.security.description}
           </p>
         </motion.div>
 
@@ -185,9 +160,9 @@ export function Security() {
         <div className="grid lg:grid-cols-5 gap-8 mb-16">
           {/* Step navigator — desktop */}
           <div className="hidden lg:flex flex-col gap-2 lg:col-span-1">
-            {STEPS.map((s, i) => (
+            {t.security.steps.map((s, i) => (
               <button
-                key={s.id}
+                key={i}
                 onClick={() => setActiveStep(i)}
                 className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all duration-200 cursor-pointer ${
                   activeStep === i
@@ -198,12 +173,12 @@ export function Security() {
                 <div
                   className="size-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-all"
                   style={{
-                    backgroundColor: activeStep === i ? `color-mix(in oklch, ${s.accent} 20%, transparent)` : "transparent",
-                    color: activeStep === i ? s.accent : "#d4d4d8",
-                    border: `2px solid ${activeStep === i ? s.accent : "var(--border)"}`,
+                    backgroundColor: activeStep === i ? `color-mix(in oklch, ${STEPS[i].accent} 20%, transparent)` : "transparent",
+                    color: activeStep === i ? STEPS[i].accent : "#d4d4d8",
+                    border: `2px solid ${activeStep === i ? STEPS[i].accent : "var(--border)"}`,
                   }}
                 >
-                  {activeStep > i ? "✓" : s.id}
+                  {activeStep > i ? "✓" : i + 1}
                 </div>
                 <span className={`text-xs font-medium leading-tight ${activeStep === i ? "text-foreground" : "text-zinc-300"}`}>
                   {s.title}
@@ -216,9 +191,9 @@ export function Security() {
           <div className="lg:col-span-4">
             {/* Mobile step indicators */}
             <div className="flex gap-1.5 mb-6 lg:hidden overflow-x-auto pb-2">
-              {STEPS.map((s, i) => (
+              {t.security.steps.map((s, i) => (
                 <button
-                  key={s.id}
+                  key={i}
                   onClick={() => setActiveStep(i)}
                   className={`shrink-0 size-9 rounded-full text-xs font-bold transition-all cursor-pointer border-2 ${
                     i === activeStep
@@ -229,11 +204,11 @@ export function Security() {
                   }`}
                   style={
                     i === activeStep
-                      ? { backgroundColor: s.accent, borderColor: s.accent }
+                      ? { backgroundColor: STEPS[i].accent, borderColor: STEPS[i].accent }
                       : {}
                   }
                 >
-                  {i < activeStep ? "✓" : s.id}
+                  {i < activeStep ? "✓" : i + 1}
                 </button>
               ))}
             </div>
@@ -250,18 +225,18 @@ export function Security() {
                 {/* Step header */}
                 <div
                   className="p-6 md:p-8"
-                  style={{ borderBottom: `3px solid ${step.accent}` }}
+                  style={{ borderBottom: `3px solid ${stepMeta.accent}` }}
                 >
                   <div className="flex items-start gap-4">
                     <div
                       className="size-14 rounded-2xl flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: `color-mix(in oklch, ${step.accent} 15%, transparent)` }}
+                      style={{ backgroundColor: `color-mix(in oklch, ${stepMeta.accent} 15%, transparent)` }}
                     >
-                      <step.icon className="size-7" style={{ color: step.accent }} />
+                      <stepMeta.icon className="size-7" style={{ color: stepMeta.accent }} />
                     </div>
                     <div>
-                      <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: step.accent }}>
-                        Paso {step.id} de {STEPS.length}
+                      <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: stepMeta.accent }}>
+                        {t.security.nav.stepLabel} {activeStep + 1} {t.security.nav.stepOf} {t.security.steps.length}
                       </div>
                       <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">{step.title}</h3>
                       <p className="text-zinc-300 leading-relaxed">{step.description}</p>
@@ -283,8 +258,8 @@ export function Security() {
                         <div
                           className="size-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
                           style={{
-                            backgroundColor: `color-mix(in oklch, ${step.accent} 15%, transparent)`,
-                            color: step.accent,
+                            backgroundColor: `color-mix(in oklch, ${stepMeta.accent} 15%, transparent)`,
+                            color: stepMeta.accent,
                           }}
                         >
                           {i + 1}
@@ -315,7 +290,7 @@ export function Security() {
                       className="gap-2"
                     >
                       <ChevronLeft className="size-4" />
-                      Anterior
+                      {t.security.nav.prev}
                     </Button>
                     <span className="text-xs text-zinc-300">
                       {activeStep + 1} / {STEPS.length}
@@ -325,12 +300,12 @@ export function Security() {
                         onClick={() => setActiveStep(Math.min(STEPS.length - 1, activeStep + 1))}
                         className="gap-2"
                       >
-                        Siguiente
+                        {t.security.nav.next}
                         <ChevronRight className="size-4" />
                       </Button>
                     ) : (
                       <Button onClick={() => setActiveStep(0)} variant="outline">
-                        ¡Repasa desde el inicio!
+                        {t.security.nav.restart}
                       </Button>
                     )}
                   </div>
@@ -348,17 +323,17 @@ export function Security() {
           transition={{ duration: 0.5 }}
         >
           <h3 className="text-2xl font-bold text-foreground text-center mb-2">
-            Guía rápida: ¿Qué puedo llevar?
+            {t.security.guide.title}
           </h3>
           <p className="text-zinc-300 text-center mb-8">
-            Consulta antes de hacer la maleta de mano.
+            {t.security.guide.subtitle}
           </p>
 
           {/* Tab selector */}
           <div className="flex justify-center gap-2 mb-6">
             {[
-              { key: "liquids", label: "💧 Líquidos" },
-              { key: "electronics", label: "💻 Electrónica" },
+              { key: "liquids", label: `💧 ${t.security.tabs.liquids}` },
+              { key: "electronics", label: `💻 ${t.security.tabs.electronics}` },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -379,14 +354,14 @@ export function Security() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border bg-muted/30">
-                    <th className="text-left p-4 text-sm font-semibold text-foreground">Artículo</th>
-                    <th className="text-center p-4 text-sm font-semibold text-foreground w-32">Estado</th>
-                    <th className="text-left p-4 text-sm font-semibold text-foreground">Nota importante</th>
+                    <th className="text-left p-4 text-sm font-semibold text-foreground">{t.security.tableHeaders.item}</th>
+                    <th className="text-center p-4 text-sm font-semibold text-foreground w-32">{t.security.tableHeaders.status}</th>
+                    <th className="text-left p-4 text-sm font-semibold text-foreground">{t.security.tableHeaders.note}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <AnimatePresence mode="wait">
-                    {(activeTab === "liquids" ? LIQUIDS : ELECTRONICS).map((row, i) => (
+                    {(activeTab === "liquids" ? t.security.liquids : t.security.electronics).map((row, i) => (
                       <motion.tr
                         key={`${activeTab}-${i}`}
                         initial={{ opacity: 0, x: 10 }}

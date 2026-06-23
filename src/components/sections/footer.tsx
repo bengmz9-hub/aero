@@ -1,50 +1,19 @@
 "use client";
 
+import { motion } from "framer-motion";
+import { Plane, Heart, PlaneTakeoff } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { Separator } from "@/components/ui/separator";
-import { PlaneTakeoff } from "lucide-react";
-
-const FOOTER_LINKS = {
-  "Llegar al Aeropuerto": [
-    { label: "Aerobús", href: "#transporte" },
-    { label: "Metro L9 Sud", href: "#transporte" },
-    { label: "Taxi y VTC", href: "#transporte" },
-    { label: "Tren RENFE R2", href: "#transporte" },
-    { label: "Parking propio", href: "#transporte" },
-  ],
-  "Control de Seguridad": [
-    { label: "Guía paso a paso", href: "#seguridad" },
-    { label: "Regla de los líquidos", href: "#seguridad" },
-    { label: "Electrónica permitida", href: "#seguridad" },
-    { label: "Medicación y bebés", href: "#faq" },
-  ],
-  "En el Aeropuerto": [
-    { label: "Terminal T1", href: "#navegacion" },
-    { label: "Terminal T2", href: "#navegacion" },
-    { label: "Zona Tierra", href: "#navegacion" },
-    { label: "Zona Aire / Duty Free", href: "#navegacion" },
-  ],
-  "Links Útiles": [
-    { label: "AENA — Vuelos en directo", href: "https://www.aena.es/es/infovuelos.html" },
-    { label: "Objetos Perdidos", href: "https://www.aena.es/es/pasajeros/equipajes-controles/objetos-perdidos.html" },
-    { label: "Preguntas Frecuentes", href: "#faq" },
-    { label: "Asistencia PMR", href: "https://www.aena.es/es/pasajeros/viajeros/personas-con-necesidades-especiales/servicio-asistencia-sin-barreras.html" },
-  ],
-};
 
 export function Footer() {
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith("#") && href.length > 1) {
-      e.preventDefault();
-      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const { t } = useLanguage();
 
   return (
     <footer className="border-t border-border bg-card">
       <div className="mx-auto max-w-7xl px-5 md:px-8 py-12 md:py-16">
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand column */}
-          <div className="sm:col-span-2 lg:col-span-1">
+          <div className="sm:col-span-2 lg:col-span-2">
             <a
               href="#"
               onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
@@ -69,27 +38,33 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Link columns */}
-          {Object.entries(FOOTER_LINKS).map(([title, links]) => (
-            <div key={title}>
-              <h4 className="text-sm font-semibold text-foreground mb-4">{title}</h4>
-              <ul className="space-y-2.5">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      onClick={(e) => handleClick(e, link.href)}
-                      target={link.href.startsWith("http") ? "_blank" : undefined}
-                      rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div>
+            <h4 className="text-zinc-100 font-semibold mb-4">{t.footer.sections.services}</h4>
+            <ul className="space-y-3">
+              <li><a href="#" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.vip}</a></li>
+              <li><a href="#" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.dutyFree}</a></li>
+              <li><a href="#" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.fastTrack}</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-zinc-100 font-semibold mb-4">{t.footer.sections.transport}</h4>
+            <ul className="space-y-3">
+              <li><a href="https://parking.aena.es/" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.parking}</a></li>
+              <li><a href="https://aerobusbarcelona.es/" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.aerobus}</a></li>
+              <li><a href="#" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.metro}</a></li>
+              <li><a href="#" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.train}</a></li>
+              <li><a href="#" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.taxi}</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-zinc-100 font-semibold mb-4">{t.footer.sections.usefulLinks}</h4>
+            <ul className="space-y-3">
+              <li><a href="https://www.aena.es/es/infovuelos.html" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.liveFlights}</a></li>
+              <li><a href="https://www.aena.es/es/pasajeros/equipajes-controles/objetos-perdidos.html" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.lostObjects}</a></li>
+              <li><a href="#faq" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.faq}</a></li>
+              <li><a href="https://www.aena.es/es/pasajeros/viajeros/personas-con-necesidades-especiales/servicio-asistencia-sin-barreras.html" className="text-sm text-zinc-400 hover:text-primary transition-colors">{t.footer.links.pmr}</a></li>
+            </ul>
+          </div>
         </div>
 
         <Separator className="my-8" />

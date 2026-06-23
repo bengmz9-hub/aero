@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Building2, PlaneTakeoff, ShoppingBag, Utensils, Car, Luggage, Accessibility, Baby, Wifi, CircleDollarSign, PlaneLanding, Shield, Sparkles } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 type Terminal = "T1" | "T2";
 type Zone = "llegadas" | "salidas-tierra" | "seguridad" | "zona-aire" | "gates";
@@ -160,11 +161,17 @@ const ZONES_T2: ZoneInfo[] = [
 ];
 
 export function AirportNav() {
+  const { t } = useLanguage();
   const [terminal, setTerminal] = useState<Terminal>("T1");
   const [activeZone, setActiveZone] = useState<Zone>("salidas-tierra");
 
-  const zones = terminal === "T1" ? ZONES_T1 : ZONES_T2;
-  const zoneInfo = zones.find((z) => z.id === activeZone) ?? zones[1];
+  const zonesMeta = terminal === "T1" ? ZONES_T1 : ZONES_T2;
+  const zonesData = terminal === "T1" ? t.navigation.zones.t1 : t.navigation.zones.t2;
+  
+  const activeIndex = zonesMeta.findIndex((z) => z.id === activeZone);
+  const safeIndex = activeIndex >= 0 ? activeIndex : 1;
+  const zoneMeta = zonesMeta[safeIndex];
+  const zoneInfo = zonesData[safeIndex];
 
   return (
     <section id="navegacion" className="py-10 md:py-12 section-glow border-t border-white/5">
@@ -178,13 +185,13 @@ export function AirportNav() {
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase mb-4 border border-white/10">
             <MapPin className="size-3.5" />
-            Navegación
+            {t.navigation.tagLocation}
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-100 mb-4">
-            Distribución e <span className="runway-shimmer-text">Interior</span>
+            {t.navigation.title} <span className="runway-shimmer-text">{t.navigation.titleHighlight}</span>
           </h2>
           <p className="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Explora el mapa conceptual del aeropuerto por terminales y áreas clave. Encuentra servicios, accesos y todo lo necesario en cada parada.
+            {t.navigation.description}
           </p>
         </motion.div>
 
@@ -198,11 +205,11 @@ export function AirportNav() {
               }}
               className={`px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                 terminal === "T1"
-                  ? "bg-primary text-primary-foreground font-semibold shadow"
-                  : "text-zinc-300 hover:text-zinc-100"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                  : "text-zinc-400 hover:text-zinc-200"
               }`}
             >
-              Terminal T1
+              {t.navigation.tabs.t1}
             </button>
             <button
               onClick={() => {
@@ -211,22 +218,22 @@ export function AirportNav() {
               }}
               className={`px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                 terminal === "T2"
-                  ? "bg-primary text-primary-foreground font-semibold shadow"
-                  : "text-zinc-300 hover:text-zinc-100"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                  : "text-zinc-400 hover:text-zinc-200"
               }`}
             >
-              Terminal T2
+              {t.navigation.tabs.t2}
             </button>
           </div>
         </div>
 
         {/* Zone navigation steps */}
-        <div className="flex overflow-x-auto gap-2 justify-start md:justify-center items-center pb-4 mb-8 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-          {zones.map((z, i) => (
+        <div className="flex overflow-x-auto gap-1.5 justify-start xl:justify-center items-center pb-4 mb-8 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+          {zonesMeta.map((z, i) => (
             <div key={z.id} className="flex items-center shrink-0">
               <button
                 onClick={() => setActiveZone(z.id)}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all duration-300 cursor-pointer border ${
+                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-left transition-all duration-300 cursor-pointer border shrink-0 ${
                   activeZone === z.id
                     ? "bg-zinc-900/60 border-primary shadow-lg shadow-primary/5 text-zinc-100"
                     : "border-white/5 hover:border-white/15 text-zinc-300 hover:text-zinc-200"
@@ -241,12 +248,12 @@ export function AirportNav() {
                 >
                   <z.icon className="size-4.5" />
                 </div>
-                <span className="text-xs font-semibold leading-tight uppercase tracking-wider">
-                  {z.label.split("(")[0].trim()}
+                <span className="text-[11px] font-bold leading-tight uppercase tracking-wide whitespace-nowrap">
+                  {zonesData[i].label.split("(")[0].trim()}
                 </span>
               </button>
-              {i < zones.length - 1 && (
-                <div className="w-4 h-px bg-white/10 mx-2 shrink-0" />
+              {i < zonesMeta.length - 1 && (
+                <div className="w-3 h-px bg-white/10 mx-1.5 shrink-0" />
               )}
             </div>
           ))}
@@ -262,7 +269,7 @@ export function AirportNav() {
             transition={{ duration: 0.35, ease: "easeInOut" }}
             className="rounded-2xl border border-white/10 bg-zinc-900/40 backdrop-blur-md overflow-hidden shadow-2xl"
           >
-            <div className="p-6 md:p-8" style={{ borderLeft: `4px solid ${zoneInfo.accent}` }}>
+            <div className="p-6 md:p-8" style={{ borderLeft: `4px solid ${zoneMeta.accent}` }}>
               <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
                 {/* Left: Header + description */}
                 <div className="flex flex-col justify-between gap-5">
@@ -270,13 +277,13 @@ export function AirportNav() {
                     <div className="flex items-start gap-4 mb-4">
                       <div
                         className="size-14 rounded-2xl flex items-center justify-center shrink-0"
-                        style={{ backgroundColor: `color-mix(in oklch, ${zoneInfo.accent} 15%, transparent)` }}
+                        style={{ backgroundColor: `color-mix(in oklch, ${zoneMeta.accent} 15%, transparent)` }}
                       >
-                        <zoneInfo.icon className="size-7" style={{ color: zoneInfo.accent }} />
+                        <zoneMeta.icon className="size-7" style={{ color: zoneMeta.accent }} />
                       </div>
                       <div>
-                        <div className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: zoneInfo.accent }}>
-                          {terminal} — {zoneInfo.label}
+                        <div className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: zoneMeta.accent }}>
+                          {t.navigation.tabs[terminal.toLowerCase() as "t1" | "t2"]} — {zoneInfo.label}
                         </div>
                         <h3 className="text-xl font-bold text-zinc-100 leading-tight">{zoneInfo.label}</h3>
                       </div>
@@ -287,10 +294,10 @@ export function AirportNav() {
                   <div
                     className="rounded-xl p-4 text-xs text-zinc-200 border leading-relaxed bg-zinc-950/20"
                     style={{
-                      borderColor: `color-mix(in oklch, ${zoneInfo.accent} 15%, transparent)`,
+                      borderColor: `color-mix(in oklch, ${zoneMeta.accent} 15%, transparent)`,
                     }}
                   >
-                    <span className="font-bold text-zinc-100 block mb-1" style={{ color: zoneInfo.accent }}>💡 Consejo Útil:</span>
+                    <span className="font-bold text-zinc-100 block mb-1" style={{ color: zoneMeta.accent }}>💡 Consejo Útil:</span>
                     {zoneInfo.tip}
                   </div>
                 </div>
@@ -313,11 +320,11 @@ export function AirportNav() {
                         <div
                           className="size-8.5 rounded-lg flex items-center justify-center shrink-0"
                           style={{
-                            backgroundColor: `color-mix(in oklch, ${zoneInfo.accent} 12%, transparent)`,
-                            color: zoneInfo.accent,
+                            backgroundColor: `color-mix(in oklch, ${zoneMeta.accent} 12%, transparent)`,
+                            color: zoneMeta.accent,
                           }}
                         >
-                          {s.icon}
+                          {zoneMeta.services[i].icon}
                         </div>
                         <div>
                           <p className="text-xs font-bold text-zinc-100 mb-0.5 leading-snug">{s.name}</p>

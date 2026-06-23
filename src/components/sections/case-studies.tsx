@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, HelpCircle } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface FAQ {
   id: string;
@@ -179,10 +180,18 @@ function FAQCard({ faq }: { faq: FAQ }) {
 }
 
 export function FAQ() {
+  const { t } = useLanguage();
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
-  const uniqueTags = Array.from(new Set(FAQS.map((f) => f.tag)));
-  const filtered = activeTag ? FAQS.filter((f) => f.tag === activeTag) : FAQS;
+  const translatedFaqs = FAQS.map((faq, idx) => ({
+    ...faq,
+    question: t.faq.items[idx].question,
+    answer: t.faq.items[idx].answer,
+    tag: t.faq.items[idx].tag,
+  }));
+
+  const uniqueTags = Array.from(new Set(translatedFaqs.map((f) => f.tag)));
+  const filtered = activeTag ? translatedFaqs.filter((f) => f.tag === activeTag) : translatedFaqs;
 
   return (
     <section id="faq" className="py-10 md:py-12 bg-muted/20 section-glow border-t border-white/5">
@@ -196,13 +205,13 @@ export function FAQ() {
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase mb-4 border border-white/10">
             <HelpCircle className="size-3.5" />
-            Preguntas Frecuentes
+            {t.faq.tagLocation}
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-100 mb-4">
-            ¿Tienes alguna <span className="runway-shimmer-text">duda?</span>
+            {t.faq.title} <span className="runway-shimmer-text">{t.faq.titleHighlight}</span>
           </h2>
           <p className="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Las dudas más habituales resueltas con respuestas directas para planificar tu paso por Barcelona-El Prat.
+            {t.faq.description}
           </p>
         </motion.div>
 
@@ -216,10 +225,10 @@ export function FAQ() {
                 : "border-white/10 bg-zinc-900/60 text-zinc-200 hover:text-zinc-100 hover:border-white/20"
             }`}
           >
-            Todas
+            {t.faq.allTags}
           </button>
           {uniqueTags.map((tag) => {
-            const faq = FAQS.find((f) => f.tag === tag)!;
+            const faq = translatedFaqs.find((f) => f.tag === tag)!;
             const isActive = activeTag === tag;
             return (
               <button

@@ -14,6 +14,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface LinkCard {
   id: string;
@@ -103,6 +104,8 @@ const QUICK_INFO = [
 ];
 
 export function UsefulLinks() {
+  const { t } = useLanguage();
+
   return (
     <section id="links" className="py-10 md:py-12 border-t border-white/5">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
@@ -115,13 +118,13 @@ export function UsefulLinks() {
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase mb-4 border border-white/10">
             <Globe className="size-3.5" />
-            Enlaces
+            {t.usefulLinks.tagLocation}
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-100 mb-4">
-            Todo lo que necesitas, <span className="runway-shimmer-text">a un clic</span>
+            {t.usefulLinks.title} <span className="runway-shimmer-text">{t.usefulLinks.titleHighlight}</span>
           </h2>
           <p className="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Enlaces oficiales y herramientas de consulta rápida para programar tu viaje con seguridad.
+            {t.usefulLinks.description}
           </p>
         </motion.div>
 
@@ -142,8 +145,8 @@ export function UsefulLinks() {
                 {info.icon}
               </div>
               <div>
-                <p className="text-xs text-muted-foreground mb-0.5">{info.label}</p>
-                <p className="text-sm font-semibold text-foreground">{info.value}</p>
+                <p className="text-xs text-muted-foreground mb-0.5">{t.usefulLinks.quickInfo[i].label}</p>
+                <p className="text-sm font-semibold text-foreground">{t.usefulLinks.quickInfo[i].value}</p>
               </div>
             </div>
           ))}
@@ -179,7 +182,7 @@ export function UsefulLinks() {
                     {card.icon}
                   </div>
                   <div className="flex items-center gap-2">
-                    {card.badge && (
+                    {t.usefulLinks.items[i].badge && (
                       <span
                         className="text-xs font-semibold px-2 py-0.5 rounded-full"
                         style={{
@@ -187,7 +190,7 @@ export function UsefulLinks() {
                           color: card.accent,
                         }}
                       >
-                        {card.badge}
+                        {t.usefulLinks.items[i].badge}
                       </span>
                     )}
                     <ExternalLink
@@ -197,10 +200,10 @@ export function UsefulLinks() {
                 </div>
 
                 <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">
-                  {card.title}
+                  {t.usefulLinks.items[i].title}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {card.description}
+                  {t.usefulLinks.items[i].description}
                 </p>
               </div>
             </motion.a>
@@ -216,17 +219,17 @@ export function UsefulLinks() {
           className="mt-12 p-5 rounded-xl border border-border bg-muted/20 text-center"
         >
           <p className="text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">⚠️ Información orientativa.</span>{" "}
-            Las normas de seguridad, horarios y precios pueden cambiar. Siempre consulta{" "}
+            <span className="font-semibold text-foreground">{t.usefulLinks.disclaimer.warning}</span>{" "}
+            {t.usefulLinks.disclaimer.text}
             <a
               href="https://www.aena.es"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary underline underline-offset-2 hover:no-underline"
             >
-              la web oficial de AENA
+              {t.usefulLinks.disclaimer.linkAena}
             </a>{" "}
-            y la web de tu aerolínea para información actualizada antes de volar.
+            {t.usefulLinks.disclaimer.textEnd}
           </p>
         </motion.div>
 
@@ -245,11 +248,10 @@ export function UsefulLinks() {
           <div className="relative z-10">
             <div className="text-4xl mb-4">✈️</div>
             <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-              ¡Buen viaje desde Barcelona!
+              {t.usefulLinks.ctaFooter.title}
             </h3>
             <p className="text-muted-foreground max-w-xl mx-auto mb-6">
-              Con esta guía estás listo para llegar al aeropuerto, pasar el control sin estrés
-              y disfrutar de tu vuelo. Comparte esta guía con alguien que la necesite.
+              {t.usefulLinks.ctaFooter.description}
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Button
@@ -258,7 +260,7 @@ export function UsefulLinks() {
                 onClick={() => window.open("https://www.aena.es/es/infovuelos.html", "_blank")}
               >
                 <PlaneTakeoff className="size-4 mr-2" />
-                Ver mi vuelo en AENA
+                {t.usefulLinks.ctaFooter.btnPrimary}
               </Button>
               <Button
                 variant="outline"
@@ -266,7 +268,7 @@ export function UsefulLinks() {
                 className="font-semibold"
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               >
-                Volver al inicio
+                {t.usefulLinks.ctaFooter.btnSecondary}
               </Button>
             </div>
           </div>
