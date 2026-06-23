@@ -195,14 +195,14 @@ export function Transport() {
           transition={{ duration: 0.5 }}
           className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/5 backdrop-blur-sm text-zinc-300 text-xs font-medium tracking-widest uppercase mb-6 border border-white/5">
-            <Bus className="size-3.5 opacity-70" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase mb-4 border border-white/10">
+            <Bus className="size-3.5" />
             Transporte y Conexiones
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-[3rem] font-light tracking-tight text-zinc-100 mb-5 leading-tight">
-            Cómo llegar y salir de <span className="font-semibold text-zinc-100">El Prat</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-100 mb-4">
+            Cómo llegar y salir <span className="runway-shimmer-text">de El Prat</span>
           </h2>
-          <p className="text-zinc-300 text-base max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Compara las opciones de transporte oficiales entre Barcelona y el aeropuerto.
             Selecciona una opción para ver detalles, tarifas y ventajas.
           </p>
