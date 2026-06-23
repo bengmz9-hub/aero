@@ -346,7 +346,7 @@ export function Hero() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="absolute -right-8 top-16 bg-zinc-900/80 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl z-20 hidden lg:block"
+            className="absolute -right-8 top-[40%] bg-zinc-900/80 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl z-20 hidden lg:block"
             style={{ transform: `translate(${tilt.y * -5}px, ${tilt.x * -5}px)` }}
           >
             <div className="flex items-center gap-3">
@@ -365,7 +365,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="absolute -left-12 bottom-24 bg-zinc-900/80 backdrop-blur-xl border border-white/10 p-3 rounded-2xl shadow-2xl z-20 hidden lg:flex items-center gap-3 pr-5"
+            className="absolute -left-12 bottom-12 bg-zinc-900/80 backdrop-blur-xl border border-white/10 p-3 rounded-2xl shadow-2xl z-20 hidden lg:flex items-center gap-3 pr-5"
             style={{ transform: `translate(${tilt.y * 5}px, ${tilt.x * 5}px)` }}
           >
             <div className="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
