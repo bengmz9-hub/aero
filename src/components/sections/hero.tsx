@@ -143,21 +143,21 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative block w-full lg:max-w-[480px] justify-self-center"
+          className="relative block w-full lg:max-w-[540px] justify-self-end mt-10 lg:mt-0"
         >
           {/* Main Card with tilt effect */}
           <div
-            className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-zinc-900/60 backdrop-blur-xl flex flex-col min-h-[500px]"
+            className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-zinc-900/60 backdrop-blur-xl flex flex-col min-h-[500px] z-10"
             style={{ transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`, transition: "transform 0.2s ease-out" }}
           >
             {/* Header Image */}
-            <div className="relative h-44 w-full overflow-hidden">
+            <div className="relative h-56 w-full overflow-hidden">
               <img
-                src="bcn-airport.webp"
-                alt="Aeropuerto El Prat"
-                className="w-full h-full object-cover"
+                src="premium-airport.png"
+                alt="Aeropuerto El Prat Premium"
+                className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
               <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 text-[10px] font-bold text-primary tracking-widest uppercase flex items-center gap-1.5">
                 <span className="size-1.5 rounded-full bg-green-400 animate-pulse" />
                 Panel en vivo
@@ -340,6 +340,42 @@ export function Hero() {
               </div>
             </div>
           </div>
+
+          {/* Decorative Floating Element 1 - Weather */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="absolute -right-8 top-16 bg-zinc-900/80 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl z-20 hidden lg:block"
+            style={{ transform: `translate(${tilt.y * -5}px, ${tilt.x * -5}px)` }}
+          >
+            <div className="flex items-center gap-3">
+              <div className="size-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400">
+                <Sparkles className="size-5" />
+              </div>
+              <div>
+                <p className="text-xs text-white/50 font-semibold uppercase tracking-wider">Barcelona</p>
+                <p className="text-lg font-bold text-white">24°C <span className="text-white/40 text-sm font-normal">Soleado</span></p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Decorative Floating Element 2 - Quick Action */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="absolute -left-12 bottom-24 bg-zinc-900/80 backdrop-blur-xl border border-white/10 p-3 rounded-2xl shadow-2xl z-20 hidden lg:flex items-center gap-3 pr-5"
+            style={{ transform: `translate(${tilt.y * 5}px, ${tilt.x * 5}px)` }}
+          >
+            <div className="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+              <Plane className="size-4 -rotate-45" />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-white leading-tight">Fast Track</p>
+              <p className="text-[10px] text-white/50">Disponible ahora</p>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
 

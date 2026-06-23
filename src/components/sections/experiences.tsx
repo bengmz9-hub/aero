@@ -195,14 +195,14 @@ export function Transport() {
           transition={{ duration: 0.5 }}
           className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-md text-primary text-[10px] font-bold tracking-widest uppercase mb-4 border border-white/10">
-            <Bus className="size-3.5" />
-            Conexiones
+          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/5 backdrop-blur-sm text-white/60 text-xs font-medium tracking-widest uppercase mb-6 border border-white/5">
+            <Bus className="size-3.5 opacity-70" />
+            Transporte y Conexiones
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
-            Cómo llegar y salir <span className="runway-shimmer-text">de El Prat</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-[3rem] font-light tracking-tight text-white/90 mb-5 leading-tight">
+            Cómo llegar y salir de <span className="font-semibold text-white">El Prat</span>
           </h2>
-          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-sans">
+          <p className="text-white/50 text-base max-w-2xl mx-auto leading-relaxed font-light">
             Compara las opciones de transporte oficiales entre Barcelona y el aeropuerto.
             Selecciona una opción para ver detalles, tarifas y ventajas.
           </p>
@@ -299,7 +299,7 @@ export function Transport() {
                   </div>
 
                   {/* Category badges */}
-                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
+                  <div className="flex flex-wrap gap-3 pt-5 mt-2 border-t border-white/5">
                     {activeTransport.tags.map((tag) => {
                       const f = FILTERS.find((fi) => fi.key === tag);
                       if (!f) return null;
@@ -307,9 +307,9 @@ export function Transport() {
                       return (
                         <span
                           key={tag}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold tracking-wider uppercase border bg-white/5 text-white/50 border-white/5"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium tracking-wide border bg-transparent text-white/40 border-white/5 shadow-none transition-colors hover:text-white/60"
                         >
-                          <TagIcon className="size-3.5 shrink-0" />
+                          <TagIcon className="size-3.5 shrink-0 opacity-50" />
                           {f.label}
                         </span>
                       );
