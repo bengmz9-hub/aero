@@ -199,13 +199,13 @@ export function Security() {
                   className="size-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-all"
                   style={{
                     backgroundColor: activeStep === i ? `color-mix(in oklch, ${s.accent} 20%, transparent)` : "transparent",
-                    color: activeStep === i ? s.accent : "var(--muted-foreground)",
+                    color: activeStep === i ? s.accent : "#d4d4d8",
                     border: `2px solid ${activeStep === i ? s.accent : "var(--border)"}`,
                   }}
                 >
                   {activeStep > i ? "✓" : s.id}
                 </div>
-                <span className={`text-xs font-medium leading-tight ${activeStep === i ? "text-foreground" : "text-muted-foreground"}`}>
+                <span className={`text-xs font-medium leading-tight ${activeStep === i ? "text-foreground" : "text-zinc-300"}`}>
                   {s.title}
                 </span>
               </button>
@@ -225,7 +225,7 @@ export function Security() {
                       ? "text-zinc-100"
                       : i < activeStep
                       ? "border-chart-5 text-chart-5"
-                      : "border-border text-muted-foreground"
+                      : "border-border text-zinc-300"
                   }`}
                   style={
                     i === activeStep
@@ -264,7 +264,7 @@ export function Security() {
                         Paso {step.id} de {STEPS.length}
                       </div>
                       <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">{step.title}</h3>
-                      <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                      <p className="text-zinc-300 leading-relaxed">{step.description}</p>
                     </div>
                   </div>
                 </div>
@@ -278,7 +278,7 @@ export function Security() {
                         initial={{ opacity: 0, x: 10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.06 }}
-                        className="flex items-start gap-3 text-sm text-muted-foreground"
+                        className="flex items-start gap-3 text-sm text-zinc-300"
                       >
                         <div
                           className="size-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
@@ -317,7 +317,7 @@ export function Security() {
                       <ChevronLeft className="size-4" />
                       Anterior
                     </Button>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-zinc-300">
                       {activeStep + 1} / {STEPS.length}
                     </span>
                     {activeStep < STEPS.length - 1 ? (
@@ -350,7 +350,7 @@ export function Security() {
           <h3 className="text-2xl font-bold text-foreground text-center mb-2">
             Guía rápida: ¿Qué puedo llevar?
           </h3>
-          <p className="text-muted-foreground text-center mb-8">
+          <p className="text-zinc-300 text-center mb-8">
             Consulta antes de hacer la maleta de mano.
           </p>
 
@@ -366,7 +366,7 @@ export function Security() {
                 className={`px-5 py-2 rounded-full text-sm font-semibold transition-all cursor-pointer border ${
                   activeTab === tab.key
                     ? "bg-primary text-primary-foreground border-primary"
-                    : "border-border text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    : "border-border text-zinc-300 hover:text-foreground hover:bg-muted/50"
                 }`}
               >
                 {tab.label}
@@ -401,7 +401,7 @@ export function Security() {
                         <td className="p-4 text-center">
                           <StatusBadge status={row.status} />
                         </td>
-                        <td className="p-4 text-sm text-muted-foreground">{row.note}</td>
+                        <td className="p-4 text-sm text-zinc-300">{row.note}</td>
                       </motion.tr>
                     ))}
                   </AnimatePresence>
