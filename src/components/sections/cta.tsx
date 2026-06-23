@@ -31,7 +31,7 @@ const LINK_CARDS: LinkCard[] = [
     icon: <PlaneTakeoff className="size-5" />,
     title: "Estado de Vuelos en Tiempo Real",
     description: "Consulta salidas, llegadas, retrasos y cancelaciones de tu vuelo en la web oficial de AENA.",
-    url: "https://www.aena.es/es/aeropuerto-barcelona/vuelos.html",
+    url: "https://www.aena.es/es/infovuelos.html",
     accent: "var(--transport-aerobus)",
     badge: "Tiempo real",
   },
@@ -40,7 +40,7 @@ const LINK_CARDS: LinkCard[] = [
     icon: <Globe className="size-5" />,
     title: "Web Oficial del Aeropuerto",
     description: "Planos, servicios, información de terminales, parking y todo sobre el Aeropuerto El Prat de Barcelona.",
-    url: "https://www.aena.es/es/aeropuerto-barcelona.html",
+    url: "https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html",
     accent: "var(--zone-aire)",
   },
   {
@@ -48,7 +48,7 @@ const LINK_CARDS: LinkCard[] = [
     icon: <Luggage className="size-5" />,
     title: "Objetos Perdidos (Lost & Found)",
     description: "¿Has perdido algo en el aeropuerto o tu maleta no llegó? Reclama aquí en la web de AENA.",
-    url: "https://www.aena.es/es/aeropuerto-barcelona/objetos-perdidos.html",
+    url: "https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html",
     accent: "var(--transport-taxi)",
   },
   {
@@ -56,7 +56,7 @@ const LINK_CARDS: LinkCard[] = [
     icon: <Accessibility className="size-5" />,
     title: "Asistencia para Personas con Movilidad Reducida",
     description: "Información y formulario para solicitar asistencia PMR en el aeropuerto de Barcelona.",
-    url: "https://www.aena.es/es/pasajeros/asistencia-personas-discapacidad.html",
+    url: "https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html",
     accent: "var(--step-green)",
   },
   {
@@ -73,7 +73,7 @@ const LINK_CARDS: LinkCard[] = [
     icon: <Globe className="size-5" />,
     title: "Reserva de Parking AENA",
     description: "Reserva tu plaza de aparcamiento online y ahorra hasta un 30% frente al precio en taquilla.",
-    url: "https://www.aena.es/es/aeropuerto-barcelona/aparcamientos.html",
+    url: "https://parking.aena.es/",
     accent: "var(--transport-car)",
     badge: "Ahorra 30%",
   },
@@ -255,7 +255,7 @@ export function UsefulLinks() {
               <Button
                 size="lg"
                 className="font-semibold"
-                onClick={() => window.open("https://www.aena.es/es/aeropuerto-barcelona/vuelos.html", "_blank")}
+                onClick={() => window.open("https://www.aena.es/es/infovuelos.html", "_blank")}
               >
                 <PlaneTakeoff className="size-4 mr-2" />
                 Ver mi vuelo en AENA

@@ -100,7 +100,7 @@ export function Navbar() {
           <Button
             size="sm"
             className="ml-2 font-semibold"
-            onClick={() => window.open("https://www.aena.es/es/aeropuerto-barcelona.html", "_blank")}
+            onClick={() => window.open("https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html", "_blank")}
           >
             Ver vuelos en AENA
           </Button>
@@ -148,7 +148,7 @@ export function Navbar() {
               <Button
                 size="sm"
                 className="mt-2 font-semibold"
-                onClick={() => window.open("https://www.aena.es/es/aeropuerto-barcelona.html", "_blank")}
+                onClick={() => window.open("https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html", "_blank")}
               >
                 Ver vuelos en AENA
               </Button>

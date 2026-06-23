@@ -24,10 +24,10 @@ const FOOTER_LINKS = {
     { label: "Zona Aire / Duty Free", href: "#navegacion" },
   ],
   "Links Útiles": [
-    { label: "AENA — Vuelos en directo", href: "https://www.aena.es/es/aeropuerto-barcelona/vuelos.html" },
-    { label: "Objetos Perdidos", href: "https://www.aena.es/es/aeropuerto-barcelona/objetos-perdidos.html" },
+    { label: "AENA — Vuelos en directo", href: "https://www.aena.es/es/infovuelos.html" },
+    { label: "Objetos Perdidos", href: "https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html" },
     { label: "Preguntas Frecuentes", href: "#faq" },
-    { label: "Asistencia PMR", href: "https://www.aena.es/es/pasajeros/asistencia-personas-discapacidad.html" },
+    { label: "Asistencia PMR", href: "https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html" },
   ],
 };
 
@@ -110,7 +110,7 @@ export function Footer() {
           <div className="flex items-center gap-4">
             <span>© {new Date().getFullYear()} Guía BCN El Prat</span>
             <a
-              href="https://www.aena.es/es/aeropuerto-barcelona.html"
+              href="https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
