@@ -117,10 +117,10 @@ export function UsefulLinks() {
             <Globe className="size-3.5" />
             Enlaces
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-100 mb-4">
             Todo lo que necesitas, <span className="runway-shimmer-text">a un clic</span>
           </h2>
-          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Enlaces oficiales y herramientas de consulta rápida para programar tu viaje con seguridad.
           </p>
         </motion.div>

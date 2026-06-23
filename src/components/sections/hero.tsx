@@ -89,13 +89,13 @@ export function Hero() {
             Aeropuerto de Barcelona · IATA: BCN
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-bold leading-[1.1] tracking-tight text-white">
+          <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-bold leading-[1.1] tracking-tight text-zinc-100">
             Tu vuelo,{" "}
             <span className="runway-shimmer-text">sin estrés</span>
-            <span className="text-white">.</span>
+            <span className="text-zinc-100">.</span>
           </h1>
 
-          <p className="text-lg text-white/60 leading-relaxed max-w-xl">
+          <p className="text-lg text-zinc-300 leading-relaxed max-w-xl">
             Todo lo que necesitas saber antes de llegar al Aeropuerto El Prat:
             transporte, control de seguridad, equipaje de mano y cómo moverte
             por dentro sin complicaciones.
@@ -113,7 +113,7 @@ export function Hero() {
             <Button
               variant="outline"
               size="lg"
-              className="font-semibold text-base px-7 border-white/20 text-white hover:bg-white/10 hover:text-white"
+              className="font-semibold text-base px-7 border-white/20 text-zinc-100 hover:bg-white/10 hover:text-zinc-100"
               onClick={() => document.querySelector("#seguridad")?.scrollIntoView({ behavior: "smooth" })}
             >
               <Shield className="size-4 mr-1.5" />
@@ -122,18 +122,18 @@ export function Hero() {
           </div>
 
           {/* Stats */}
-          <div className="flex flex-wrap items-center gap-6 mt-4 text-sm text-white/50">
+          <div className="flex flex-wrap items-center gap-6 mt-4 text-sm text-zinc-300">
             <div className="flex items-center gap-2">
               <Info className="size-4 text-primary" />
-              <span><strong className="text-white/80">2 Terminales</strong> — T1 y T2</span>
+              <span><strong className="text-zinc-200">2 Terminales</strong> — T1 y T2</span>
             </div>
             <div className="flex items-center gap-2">
               <Info className="size-4 text-primary" />
-              <span><strong className="text-white/80">50M+</strong> pasajeros/año</span>
+              <span><strong className="text-zinc-200">50M+</strong> pasajeros/año</span>
             </div>
             <div className="flex items-center gap-2">
               <Info className="size-4 text-primary" />
-              <span><strong className="text-white/80">Abierto</strong> 24h/365 días</span>
+              <span><strong className="text-zinc-200">Abierto</strong> 24h/365 días</span>
             </div>
           </div>
         </motion.div>
@@ -163,8 +163,8 @@ export function Hero() {
                 Panel en vivo
               </div>
               <div className="absolute bottom-4 left-4">
-                <h3 className="text-lg font-bold text-white leading-tight">Barcelona-El Prat</h3>
-                <p className="text-xs text-white/70 font-medium">Terminal T1 & T2 · IATA: BCN</p>
+                <h3 className="text-lg font-bold text-zinc-100 leading-tight">Barcelona-El Prat</h3>
+                <p className="text-xs text-zinc-200 font-medium">Terminal T1 & T2 · IATA: BCN</p>
               </div>
             </div>
 
@@ -175,7 +175,7 @@ export function Hero() {
                 className={`flex-1 py-3 text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center gap-2 ${
                   activeTab === "vuelos"
                     ? "text-primary border-b-2 border-primary bg-primary/5"
-                    : "text-white/60 hover:text-white hover:bg-white/5"
+                    : "text-zinc-300 hover:text-zinc-100 hover:bg-white/5"
                 }`}
               >
                 <Plane className="size-4 shrink-0" />
@@ -186,7 +186,7 @@ export function Hero() {
                 className={`flex-1 py-3 text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center gap-2 ${
                   activeTab === "seguridad"
                     ? "text-primary border-b-2 border-primary bg-primary/5"
-                    : "text-white/60 hover:text-white hover:bg-white/5"
+                    : "text-zinc-300 hover:text-zinc-100 hover:bg-white/5"
                 }`}
               >
                 <Shield className="size-4 shrink-0" />
@@ -202,13 +202,13 @@ export function Hero() {
                   <div className="flex flex-col sm:flex-row gap-3">
                     {/* Search */}
                     <div className="relative flex-1">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40" />
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
                       <input
                         type="text"
                         placeholder="Buscar vuelo o destino..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-9 pr-4 py-1.5 rounded-lg bg-zinc-900/60 border border-white/10 text-sm text-white placeholder-white/40 focus:outline-none focus:border-primary/50"
+                        className="w-full pl-9 pr-4 py-1.5 rounded-lg bg-zinc-900/60 border border-white/10 text-sm text-zinc-100 placeholder-white/40 focus:outline-none focus:border-primary/50"
                       />
                     </div>
                     {/* Type Toggle */}
@@ -218,7 +218,7 @@ export function Hero() {
                         className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
                           flightType === "salidas"
                             ? "bg-primary text-primary-foreground font-semibold"
-                            : "text-white/60 hover:text-white"
+                            : "text-zinc-300 hover:text-zinc-100"
                         }`}
                       >
                         Salidas
@@ -228,7 +228,7 @@ export function Hero() {
                         className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
                           flightType === "llegadas"
                             ? "bg-primary text-primary-foreground font-semibold"
-                            : "text-white/60 hover:text-white"
+                            : "text-zinc-300 hover:text-zinc-100"
                         }`}
                       >
                         Llegadas
@@ -252,16 +252,16 @@ export function Hero() {
                             </div>
                             <div>
                               <div className="flex items-center gap-2">
-                                <span className="font-semibold text-sm text-white">{f.flight}</span>
-                                <span className="text-[10px] text-white/40 font-mono bg-white/5 px-1.5 py-0.5 rounded">
+                                <span className="font-semibold text-sm text-zinc-100">{f.flight}</span>
+                                <span className="text-[10px] text-zinc-400 font-mono bg-white/5 px-1.5 py-0.5 rounded">
                                   {f.gate}
                                 </span>
                               </div>
-                              <span className="text-xs text-white/50">{f.destination}</span>
+                              <span className="text-xs text-zinc-300">{f.destination}</span>
                             </div>
                           </div>
                           <div className="text-right">
-                            <span className="block font-mono text-sm text-white">{f.time}</span>
+                            <span className="block font-mono text-sm text-zinc-100">{f.time}</span>
                             <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full inline-block mt-1 ${
                               f.status === "Embarcando" ? "bg-amber-500/10 text-amber-400 border border-amber-500/20" :
                               f.status === "En hora" ? "bg-green-500/10 text-green-400 border border-green-500/20" :
@@ -275,7 +275,7 @@ export function Hero() {
                         </div>
                       ))
                     ) : (
-                      <div className="py-8 text-center text-sm text-white/40">
+                      <div className="py-8 text-center text-sm text-zinc-400">
                         No se encontraron vuelos
                       </div>
                     )}
@@ -285,7 +285,7 @@ export function Hero() {
                 <div className="flex-1 flex flex-col gap-4">
                   {/* Wait times */}
                   <div className="flex flex-col gap-3">
-                    <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
+                    <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                       Tiempos de espera estimados
                     </span>
                     {SECURITY_QUEUES.map((q, idx) => (
@@ -296,10 +296,10 @@ export function Hero() {
                         <div className="flex items-center gap-2.5">
                           <Clock className="size-4 text-primary shrink-0" />
                           <div>
-                            <span className="block font-semibold text-sm text-white leading-none mb-1">
+                            <span className="block font-semibold text-sm text-zinc-100 leading-none mb-1">
                               {q.name}
                             </span>
-                            <span className="text-xs text-white/45">{q.description}</span>
+                            <span className="text-xs text-zinc-400">{q.description}</span>
                           </div>
                         </div>
                         <div className="text-right flex items-center gap-3">
@@ -318,7 +318,7 @@ export function Hero() {
                   </div>
 
                   {/* Security Alert Tips */}
-                  <div className="p-3.5 rounded-xl bg-primary/10 border border-primary/20 text-xs text-white/80 leading-relaxed flex items-start gap-2.5">
+                  <div className="p-3.5 rounded-xl bg-primary/10 border border-primary/20 text-xs text-zinc-200 leading-relaxed flex items-start gap-2.5">
                     <Info className="size-4 text-primary shrink-0 mt-0.5" />
                     <div>
                       <span className="block font-bold text-primary mb-1">¿Cómo pasar rápido el filtro?</span>
@@ -329,7 +329,7 @@ export function Hero() {
               )}
 
               {/* Status info bar */}
-              <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-white/40">
+              <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400">
                 <span className="flex items-center gap-1.5">
                   <span className="size-1.5 rounded-full bg-emerald-500 animate-ping" />
                   Actualizado en tiempo real

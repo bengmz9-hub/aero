@@ -172,10 +172,10 @@ export function Security() {
             <Shield className="size-3.5" />
             Seguridad
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-100 mb-4">
             Pasa el control <span className="runway-shimmer-text">sin estrés</span>
           </h2>
-          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Guía paso a paso para ir desde la Zona Tierra a la Zona Aire con total tranquilidad.
             Sigue estos 6 pasos y llegarás a tu puerta de embarque relajado.
           </p>
@@ -222,7 +222,7 @@ export function Security() {
                   onClick={() => setActiveStep(i)}
                   className={`shrink-0 size-9 rounded-full text-xs font-bold transition-all cursor-pointer border-2 ${
                     i === activeStep
-                      ? "text-white"
+                      ? "text-zinc-100"
                       : i < activeStep
                       ? "border-chart-5 text-chart-5"
                       : "border-border text-muted-foreground"

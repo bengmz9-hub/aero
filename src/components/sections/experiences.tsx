@@ -195,14 +195,14 @@ export function Transport() {
           transition={{ duration: 0.5 }}
           className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/5 backdrop-blur-sm text-white/60 text-xs font-medium tracking-widest uppercase mb-6 border border-white/5">
+          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/5 backdrop-blur-sm text-zinc-300 text-xs font-medium tracking-widest uppercase mb-6 border border-white/5">
             <Bus className="size-3.5 opacity-70" />
             Transporte y Conexiones
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-[3rem] font-light tracking-tight text-white/90 mb-5 leading-tight">
-            Cómo llegar y salir de <span className="font-semibold text-white">El Prat</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-[3rem] font-light tracking-tight text-zinc-100 mb-5 leading-tight">
+            Cómo llegar y salir de <span className="font-semibold text-zinc-100">El Prat</span>
           </h2>
-          <p className="text-white/50 text-base max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-zinc-300 text-base max-w-2xl mx-auto leading-relaxed font-light">
             Compara las opciones de transporte oficiales entre Barcelona y el aeropuerto.
             Selecciona una opción para ver detalles, tarifas y ventajas.
           </p>
@@ -216,8 +216,8 @@ export function Transport() {
               onClick={() => setSelectedTransport(t.id)}
               className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all duration-300 cursor-pointer border shrink-0 ${
                 selectedTransport === t.id
-                  ? "bg-zinc-900/60 border-primary shadow-lg shadow-primary/5 text-white"
-                  : "border-white/5 hover:border-white/15 text-white/50 hover:text-white/80"
+                  ? "bg-zinc-900/60 border-primary shadow-lg shadow-primary/5 text-zinc-100"
+                  : "border-white/5 hover:border-white/15 text-zinc-300 hover:text-zinc-200"
               }`}
             >
               <div
@@ -265,22 +265,22 @@ export function Transport() {
                         <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: activeTransport.accent }}>
                           {activeTransport.terminal} · Frecuencia: {activeTransport.freq}
                         </div>
-                        <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">{activeTransport.name}</h3>
+                        <h3 className="text-2xl sm:text-3xl font-extrabold text-zinc-100 leading-tight">{activeTransport.name}</h3>
                       </div>
                     </div>
                     
                     {/* Specs Grid */}
                     <div className="grid grid-cols-2 gap-4 p-5 rounded-xl bg-zinc-950/20 border border-white/5 mb-5">
                       <div>
-                        <span className="text-[11px] font-bold text-white/40 uppercase tracking-wider block mb-1">Duración</span>
-                        <span className="text-base sm:text-lg font-bold text-white flex items-center gap-1.5">
+                        <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">Duración</span>
+                        <span className="text-base sm:text-lg font-bold text-zinc-100 flex items-center gap-1.5">
                           <Clock className="size-4.5 text-primary shrink-0" />
                           {activeTransport.duration}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[11px] font-bold text-white/40 uppercase tracking-wider block mb-1">Precio aproximado</span>
-                        <span className="text-base sm:text-lg font-bold text-white flex items-center gap-1.5">
+                        <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">Precio aproximado</span>
+                        <span className="text-base sm:text-lg font-bold text-zinc-100 flex items-center gap-1.5">
                           <Euro className="size-4.5 text-primary shrink-0" />
                           {activeTransport.price}
                         </span>
@@ -289,12 +289,12 @@ export function Transport() {
                   </div>
                   
                   <div
-                    className="rounded-xl p-5 text-sm text-white/70 border leading-relaxed bg-zinc-950/20"
+                    className="rounded-xl p-5 text-sm text-zinc-200 border leading-relaxed bg-zinc-950/20"
                     style={{
                       borderColor: `color-mix(in oklch, ${activeTransport.accent} 15%, transparent)`,
                     }}
                   >
-                    <span className="font-bold text-white text-sm block mb-1" style={{ color: activeTransport.accent }}>💡 Consejo Práctico:</span>
+                    <span className="font-bold text-zinc-100 text-sm block mb-1" style={{ color: activeTransport.accent }}>💡 Consejo Práctico:</span>
                     {activeTransport.tip}
                   </div>
 
@@ -307,7 +307,7 @@ export function Transport() {
                       return (
                         <span
                           key={tag}
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium tracking-wide border bg-transparent text-white/40 border-white/5 shadow-none transition-colors hover:text-white/60"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium tracking-wide border bg-transparent text-zinc-400 border-white/5 shadow-none transition-colors hover:text-zinc-300"
                         >
                           <TagIcon className="size-3.5 shrink-0 opacity-50" />
                           {f.label}
@@ -327,7 +327,7 @@ export function Transport() {
                     </h4>
                     <ul className="space-y-3">
                       {activeTransport.pros.map((p) => (
-                        <li key={p} className="text-sm text-white/70 flex items-start gap-2.5 leading-relaxed">
+                        <li key={p} className="text-sm text-zinc-200 flex items-start gap-2.5 leading-relaxed">
                           <span className="text-emerald-400 shrink-0 font-bold mt-0.5">✓</span>
                           {p}
                         </li>
@@ -343,7 +343,7 @@ export function Transport() {
                     </h4>
                     <ul className="space-y-3">
                       {activeTransport.cons.map((c) => (
-                        <li key={c} className="text-sm text-white/60 flex items-start gap-2.5 leading-relaxed">
+                        <li key={c} className="text-sm text-zinc-300 flex items-start gap-2.5 leading-relaxed">
                           <span className="text-red-400/80 shrink-0 font-bold mt-0.5">✗</span>
                           {c}
                         </li>

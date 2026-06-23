@@ -180,10 +180,10 @@ export function AirportNav() {
             <MapPin className="size-3.5" />
             Navegación
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-100 mb-4">
             Distribución e <span className="runway-shimmer-text">Interior</span>
           </h2>
-          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Explora el mapa conceptual del aeropuerto por terminales y áreas clave. Encuentra servicios, accesos y todo lo necesario en cada parada.
           </p>
         </motion.div>
@@ -199,7 +199,7 @@ export function AirportNav() {
               className={`px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                 terminal === "T1"
                   ? "bg-primary text-primary-foreground font-semibold shadow"
-                  : "text-white/60 hover:text-white"
+                  : "text-zinc-300 hover:text-zinc-100"
               }`}
             >
               Terminal T1
@@ -212,7 +212,7 @@ export function AirportNav() {
               className={`px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                 terminal === "T2"
                   ? "bg-primary text-primary-foreground font-semibold shadow"
-                  : "text-white/60 hover:text-white"
+                  : "text-zinc-300 hover:text-zinc-100"
               }`}
             >
               Terminal T2
@@ -228,8 +228,8 @@ export function AirportNav() {
                 onClick={() => setActiveZone(z.id)}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all duration-300 cursor-pointer border ${
                   activeZone === z.id
-                    ? "bg-zinc-900/60 border-primary shadow-lg shadow-primary/5 text-white"
-                    : "border-white/5 hover:border-white/15 text-white/50 hover:text-white/80"
+                    ? "bg-zinc-900/60 border-primary shadow-lg shadow-primary/5 text-zinc-100"
+                    : "border-white/5 hover:border-white/15 text-zinc-300 hover:text-zinc-200"
                 }`}
               >
                 <div
@@ -278,26 +278,26 @@ export function AirportNav() {
                         <div className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: zoneInfo.accent }}>
                           {terminal} — {zoneInfo.label}
                         </div>
-                        <h3 className="text-xl font-bold text-white leading-tight">{zoneInfo.label}</h3>
+                        <h3 className="text-xl font-bold text-zinc-100 leading-tight">{zoneInfo.label}</h3>
                       </div>
                     </div>
-                    <p className="text-white/60 text-sm leading-relaxed mb-4">{zoneInfo.description}</p>
+                    <p className="text-zinc-300 text-sm leading-relaxed mb-4">{zoneInfo.description}</p>
                   </div>
                   
                   <div
-                    className="rounded-xl p-4 text-xs text-white/70 border leading-relaxed bg-zinc-950/20"
+                    className="rounded-xl p-4 text-xs text-zinc-200 border leading-relaxed bg-zinc-950/20"
                     style={{
                       borderColor: `color-mix(in oklch, ${zoneInfo.accent} 15%, transparent)`,
                     }}
                   >
-                    <span className="font-bold text-white block mb-1" style={{ color: zoneInfo.accent }}>💡 Consejo Útil:</span>
+                    <span className="font-bold text-zinc-100 block mb-1" style={{ color: zoneInfo.accent }}>💡 Consejo Útil:</span>
                     {zoneInfo.tip}
                   </div>
                 </div>
 
                 {/* Right: Services list */}
                 <div>
-                  <p className="text-xs font-bold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-1.5">
+                  <p className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-4 flex items-center gap-1.5">
                     <Sparkles className="size-3.5 text-primary" />
                     Servicios Destacados
                   </p>
@@ -320,8 +320,8 @@ export function AirportNav() {
                           {s.icon}
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-white mb-0.5 leading-snug">{s.name}</p>
-                          <p className="text-xs text-white/55 leading-relaxed">{s.detail}</p>
+                          <p className="text-xs font-bold text-zinc-100 mb-0.5 leading-snug">{s.name}</p>
+                          <p className="text-xs text-zinc-100/55 leading-relaxed">{s.detail}</p>
                         </div>
                       </motion.div>
                     ))}

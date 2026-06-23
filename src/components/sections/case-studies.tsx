@@ -198,10 +198,10 @@ export function FAQ() {
             <HelpCircle className="size-3.5" />
             Preguntas Frecuentes
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-100 mb-4">
             ¿Tienes alguna <span className="runway-shimmer-text">duda?</span>
           </h2>
-          <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Las dudas más habituales resueltas con respuestas directas para planificar tu paso por Barcelona-El Prat.
           </p>
         </motion.div>
@@ -213,7 +213,7 @@ export function FAQ() {
             className={`inline-flex items-center px-4 py-2 rounded-full border text-xs font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer ${
               activeTag === null
                 ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/10"
-                : "border-white/10 bg-zinc-900/60 text-white/70 hover:text-white hover:border-white/20"
+                : "border-white/10 bg-zinc-900/60 text-zinc-200 hover:text-zinc-100 hover:border-white/20"
             }`}
           >
             Todas
