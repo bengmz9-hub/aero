@@ -25,7 +25,7 @@ const FOOTER_LINKS = {
   ],
   "Links Útiles": [
     { label: "AENA — Vuelos en directo", href: "https://www.aena.es/es/infovuelos.html" },
-    { label: "Objetos Perdidos", href: "https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html" },
+    { label: "Objetos Perdidos", href: "https://www.aena.es/es/pasajeros/equipajes-controles/objetos-perdidos.html" },
     { label: "Preguntas Frecuentes", href: "#faq" },
     { label: "Asistencia PMR", href: "https://www.aena.es/es/pasajeros/viajeros/personas-con-necesidades-especiales/servicio-asistencia-sin-barreras.html" },
   ],

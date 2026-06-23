@@ -48,7 +48,7 @@ const LINK_CARDS: LinkCard[] = [
     icon: <Luggage className="size-5" />,
     title: "Objetos Perdidos (Lost & Found)",
     description: "¿Has perdido algo en el aeropuerto o tu maleta no llegó? Reclama aquí en la web de AENA.",
-    url: "https://www.aena.es/es/josep-tarradellas-barcelona-el-prat.html",
+    url: "https://www.aena.es/es/pasajeros/equipajes-controles/objetos-perdidos.html",
     accent: "var(--transport-taxi)",
   },
   {
